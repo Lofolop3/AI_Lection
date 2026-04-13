@@ -1,0 +1,301 @@
+a:active {
+  color: #400080;
+}
+
+a:link {
+  color: #0000ff;
+}
+
+a:visited {
+  color: #6300c6;
+}
+
+a{
+  text-decoration: none;
+}
+
+
+.activepage-pseudolink {
+  color: #0000ff;
+  font-family: Tahoma;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.black {
+  color: #000000;
+}
+
+.black-link:active {
+  color: #000000;
+  font-family: Tahoma;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.black-link:link {
+  color: #000000;
+  font-family: Tahoma;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.black-link:visited {
+  color: #000000;
+  font-family: Tahoma;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.blue-link:active {
+  color: #0000ff;
+  font-family: Tahoma;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.blue-link:link {
+  color: #0000ff;
+  font-family: Tahoma;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.blue-link:visited {
+  color: #0000ff;
+  font-family: Tahoma;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.practice:active {
+  font-family: Arial;
+  font-size: 100%;
+  font-weight: bold;
+  letter-spacing: 2px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.practice:link {
+  font-family: Arial;
+  font-size: 100%;
+  font-weight: bold;
+  letter-spacing: 2px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.practice:visited {
+  font-family: Arial;
+  font-size: 100%;
+  font-weight: bold;
+  letter-spacing: 2px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+}
+
+.small-link:active {
+  color: #ffff00;
+  font-family: Tahoma;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+.small-link:link {
+  color: #ffffff;
+  font-family: Tahoma;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+.small-link:visited {
+  color: #ffffff;
+  font-family: Tahoma;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+.yellow {
+  color: #ffff00;
+}
+
+.blue {
+  color: #0000ff;
+}
+
+.green {
+  color: #00ff00;
+}
+
+.math {
+  font-family: Tahoma;
+  font-size: 14pt;
+}
+
+.red {
+  color: #ff0000;
+}
+
+.var {
+  color: #555555;
+}
+
+#noindent {
+  text-indent: 0;
+}
+
+body{font-family: Arial;}
+
+h1 {
+  font-family: Arial;
+  font-size: 150%;
+  font-weight: normal;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-top: 15px;
+}
+
+h2 {
+  font-family: Arial;
+  font-size: 100%;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-top: 15px;
+}
+
+h3 {
+  color: #999999;
+  font-family: Arial;
+  font-size: 100%;
+  letter-spacing: 7px;  
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-top: 15px;
+}
+
+li {
+  text-align: justify;
+}
+
+p {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+span.exam {
+  font-weight: bold;
+}
+
+span.opr {
+  font-weight: bold;
+}
+
+span.piccap {
+  color: blue;
+  font-family: Tahoma;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+span.picid {
+  color: blue;
+  font-family: Tahoma;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+span.tabcap { 
+}
+
+
+span.task {
+  font-weight: bold;
+}
+
+ul {
+/* list-style-type: square; */
+  padding-bottom: 0;
+  padding-left: 50px;
+  padding-right: 15px;  
+  padding-top: 0;
+}
+
+u {
+  color: #ff0000;
+  font-weight: bold;
+  font-size: 12pt;
+}
+
+ol {
+/* list-style-type: square; */
+  padding-bottom: 0;
+  padding-left: 50px;
+  padding-right: 15px;  
+  padding-top: 0;
+}
+
+.bg-yellow{background-color:lighyellow}
+.bg-blue{background-color:lightblue}
+.bg-green{background-color:lightgreen}
+
+/* ========== Адаптивность без изменения центрирования ========== */
+
+/* Делаем таблицу с шириной 750 резиновой, но сохраняем центрирование */
+table[width="750"] {
+    width: 100% !important;
+    max-width: 750px !important;  /* Максимальная ширина остаётся 750px */
+    min-width: 200px !important;   /* Минимальная ширина — 200px */
+    margin: 0 auto !important;     /* Центрирование */
+}
+
+/* Принудительный перенос текста во всех ячейках */
+td {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+}
+
+/* Для всех текстовых элементов */
+p, h1, h2, h3, li, .math, .text_content, span, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    padding: 0%;
+}
+
+/* Изображения подстраиваются под ширину */
+img {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* Видео и PDF адаптируются */
+video, embed {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* Списки не выходят за границы */
+ul, ol {
+    padding-left: 25px !important;
+    padding-right: 10px !important;
+}
+
+/* Для мобильных устройств — уменьшаем внутренние отступы */
+@media (max-width: 600px) {
+    table[width="750"] {
+        width: 95% !important;
+    }
+    
+    td {
+        padding: 5px !important;
+    }
+    
+    p, h1, h2, h3 {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+}

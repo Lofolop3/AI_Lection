@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 12. Метод искусственного интеллекта #2. Автопрограммирование</TITLE>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center"
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection09.html" title="Лекция 09. Интеллект, разум, ум (обобщение и повторение)" class="black-link">Л 09</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection10.html" title="Лекция 10. Понятие модели. Система моделей окружающего нас мира. Думать – значит моделировать." class="black-link">Л 10</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection11.html" title="Лекция 11. От модели к задаче. Алгоритм решения задачи" class="black-link">Л 11</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 12</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection13.html" title="Лекция 13. Метод искусственного интеллекта #3. Оценочная функция" class="black-link">Л 13</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection14.html" title="Лекция 14. Метод искусственного интеллекта #4. Машина из бусинок" class="black-link">Л 14</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection15.html" title="Лекция 15. Метод искусственного интеллекта #5. Экспертная система" class="black-link">Л 15</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table
+><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1>Лекция 12. <br>Метод искусственного интеллекта #2. Автопрограммирование</h1>
+</div>
+
+<div>
+    <div>
+        <div>
+            <div>
+                <p>Алгоритмизация и последующее за ней программирование - выстраивание явного порядка вычислений
+                    сложной математической модели. Узнать значение очередной переменной можно, если значения всех переменных,
+                    которые необходимы для её вычисления, к данному моменту уже определены. Поскольку вычисляемые математические
+                    выражения соответствуют законам, по которым функционирует мир, то построить алгоритм - это значит определить
+                    порядок вычисления законов.</p>
+                <p>Рассмотрим знакомую вам область - законы треугольника. Элементы треугольника представим
+                    переменными-понятиями. Все эти понятия в треугольнике связаны между собой законами. Изобразим систему
+                    «треугольник» в виде графа понятий и законов (см.<a href="#ris-2">рис.12.1</a>). На модели «треугольник» сформулируем задачу: допустим нам
+                    известны две стороны треугольника a и b и угол между ними γ.</p>
+                    <div style="text-align: center; color: blue;">
+                        <img id="ris-1.1" src="../../../img/lection12/1.png" style="width: 45%; height:45%;">
+                        <img id="ris-1.2" src="../../../img/lection12/image.png" style="width: 45%; height:45%;">
+                    </div>
+                    <div style="text-align: center; color: blue;"><img id="ris-2" src="../../../img/lection12/triangle_graph.png" style="width: 100%; height:100%;"></div>
+                    <div style="text-align: center; color: blue;">Рисунок 12.1. - Система «треугольник»</div>
+                <p>Допустим, что нам известны к настоящему моменту законы:
+                    <ol style="font-size: large;">
+                        <li><i></i>c² = a² + b² - 2ab·cos(γ) </i></li>
+                        <li><i> a² = b² + c² - 2bc·cos(α) </i></li>
+                        <li><i> b² = a² + c² - 2ac·cos(β) </i></li>
+                        <li><i> P = a + b + c </i> (4)</li>
+                        <li><i> S = √(P/2·(P/2 - a)·(P/2 - b)·(P/2 - c)) </i></li>
+                        <li><i> h_b = a·sin(γ) </i></li>
+                        <li><i> h_c = b·sin(α) </i></li>
+                        <li><i> h_a = c·sin(β) </i></li>
+                        <li><i> m_a = 0.5·√(2c² + 2b² - a²) </i></li>
+                        <li><i> m_b = 0.5·√(2a² + 2c² - b²) </i></li>
+                        <li><i> m_c = 0.5·√(2a² + 2b² - c²) </i></li>
+                        <li><i> S = (P·r)/2 </i></li>
+                        <li><i> S = 2R²·sin(α)·sin(β)·sin(γ) </i></li>
+                    </ol></p>
+                <p>Граф можно представить в виде, удобном для машинной записи — матрицей (см.<a href="#table-1">табл.12.1</a>), показывающей, в каком законе
+                    содержатся какие понятия. По горизонтали – связи (законы), по вертикали – элементы (понятия). В пересечении
+                    <i>i</i>-той строки и <i>j</i>-го столбца в матрице «элементы-связи» ставится отметка, если <i>i</i>-тая
+                    переменная содержится в записи <i>j</i>-го закона. Матрица — это модель системы, составленная из моделей её
+                    элементов.</p>
+                    <div style="text-align: right; color: blue;">Таблица 12.1. - Матрица графа</div>
+                    <div style="text-align: center; color: blue;"><img id="table-1" src="../../../img/lection12/3.png" style="width: 100%; height:100%;"></div>
+                <p><b style="color: red;">Задача.</b> Известны длины двух сторон и угол между ними: <b style="color: red;"><i>a</i></b>, <b style="color: red;"><i>b</i></b>,
+                    <b style="color: red;"><i>γ</i></b>. Найти остальные неизвестные величины в треугольнике.</p>
+                <p>Пометим <b style="color: red;">красным цветом</b> в матрице «элементы-связи» известные в задаче величины и соответствующие им
+                    строки.</p>
+                <p>Далее найдём среди столбцов матрицы такие, в которых упоминаются любые из заданных в задаче величин
+                    <b style="color: red;"><i>γ</i></b> и имеется еще одна любая неизвестная величина. Такие столбцы есть. Новая величина
+                    <b style="color: red;"><i>c</i></b>, которая может быть вычислена из уравнения <i>(1)</i>, и <b style="color: red;"><i>h<sub>b</sub></i></b> из
+                    уравнения <i>(6)</i>.</p>
+                <p>За счёт законов <i>c² = a² + b² - 2ab·cos(γ)</i> и <i>h<sub>b</sub> = a·sin(γ)</i> наше множество известных
+                    величин пополнилось: <b style="color: red;"><i>h<sub>b</sub></i></b>.</p>
+                <p>Для наглядности подкрасим <b style="color: red;">красным цветом</b> еще строки <b style="color: red;"><i>c</i></b>, <b style="color: red;"><i>h<sub>b</sub></i></b>.</p>
+                <p>Найдём снова один или несколько столбцов, в которых упоминаются любые величины из множества
+                    <b style="color: red;"><i>h<sub>b</sub></i></b> и только одна новая неизвестная величина.</p>
+                <p>Таких столбцов несколько: <i>2, 3, 4, 9, 10, 11</i>. Можно параллельно на этом этапе вычислить сразу
+                    несколько величин: <b style="color: red;"><i>α</i></b>, <b style="color: red;"><i>β</i></b>, <b style="color: red;"><i>P</i></b>, <b style="color: red;"><i>m<sub>a</sub></i></b>,
+                    <b style="color: red;"><i>m<sub>b</sub></i></b>, <b style="color: red;"><i>m<sub>c</sub></i></b>. Ряд известных величин снова пополнился:
+                    <b style="color: red;"><i>m<sub>c</sub></i></b>.</p>
+                <p>Переходя от строк к столбцам и снова от столбцов к строкам, процедура продолжается до момента определения
+                    величины, которая нас интересует.</p>
+                <p>Фактически для данной задачи граф <b style="color: blue;">«треугольника»</b> приводится к <b style="color: blue;">ярусно-параллельной форме</b>. Такая
+                    форма графа соответствует <b style="color: blue;">алгоритму вычисления ответа</b> задачи.</p>
+                <p>Если на каком-то этапе оказалось, что есть только столбцы с двумя (или более) неизвестными переменными, то
+                    надо использовать <b style="color: blue;">методы решения систем уравнений</b>.</p>
+                <p><b style="color: red;">Обратите внимание.</b> Если взять за основу в графе <b style="color: blue;">элементарные законы</b>, то шанс найти среди них
+                    столбец с одной неизвестной выше, чем у столбцов со множеством переменных.</p>
+                    <div style="text-align: center; color: blue;"><img id="ris-2" src="../../../img/lection12/image2.png" style="width: 80%; height:80%;"></div>
+                <p>Так, например, в рассматриваемой нами предметной области есть закон: <br><i>S·r·P =
+                        R·a·b·c·sin(α)·sin(β)·sin(γ)</i>, который содержит все основные понятия объекта <b style="color: blue;">«треугольник»</b>.
+                </p>
+                <p>Задействовать его в расчетах достаточно трудно, так как вряд ли в какой-то задаче будут известны 9 из 10
+                    значений переменных.</p>
+                <p>Однако, такой закон фактически является <b style="color: red;">определением треугольника</b>, так как позволяет установить для
+                    объекта, является ли он треугольником по набору значений его характеризующих величин.</p>
+                <p>С помощью данного метода можно параллельно решить ряд интересных задач:</p>
+                <ul>
+                    <li>Найти <b style="color: blue;">набор таких законов</b>, количество которых будет минимальным для определения заданного
+                        множества переменных.</li>
+                    <li>Определить <b style="color: blue;">минимальное количество действий</b>, необходимых для решения поставленной задачи
+                        (<b style="color: blue;">сложность задачи</b>).</li>
+                    <li>Определить <b style="color: blue;">максимально возможную сложность задач</b> в заданной предметной области.</li>
+                    <li>Определить <b style="color: blue;">количество задач любой сложности</b> для заданного набора законов.</li>
+                    <li>Определить, <b style="color: blue;">как это зависит</b> от выбора конкретных законов из множества заданных.</li>
+                    <li>Определить, <b style="color: blue;">какой набор законов</b> даёт наибольшее количество задач.</li>
+                    <li>Сколько <b style="color: blue;">разных вариантов решения</b> есть у конкретной задачи и как это связано с набором законов.
+                    </li>
+                    <li>Как будет <b style="color: blue;">изменяться значение искомой переменной</b>, если менять значение какой-либо заданной
+                        переменной.</li>
+                    <li>Какова <b style="color: blue;">степень самой сложной</b> из полученных зависимостей.</li>
+                </ul>
+                <p><b style="color: red;">Поиск минимального набора элементарных законов</b>, достаточных для решения любой задачи в заданной
+                    предметной области, совпадает с задачей определения <b style="color: red;">базиса элементарных законов</b>.</p>
+            </div>
+        </div>
+        <details>
+            <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+            <ul class="tasks_list">
+                <hr>
+                <li><i>Загрузите <a href="https://stratum.ac.ru/enteronline/task.php?s=3&c=7&t=5/3/1" class="themes_links">с сайта</a> упражнение «Калькулятор треугольника». Задавая различные задачи системе поиска решений, ответьте на поставленные в параграфе вопросы.</i></li>
+                <li><i>Присоедините к графу треугольника законы, позволяющие решить задачи о двух соприкасающихся, вписанных треугольниках, о ромбе, о параллелограмме.</i></li>
+                <li><i>Задайтесь собственной предметной областью (физика, химия, биология), выпишите ее формулы и переменные, постройте граф. Методом 
+                    автопрограммирования решите задачи из выбранной предметной области.</i></li>
+                <li><i>Возьмите в библиотеке методические указания по расчету параметров автомобилей. Постройте граф модели автомобиля. Задав часть параметров будущего 
+                    автомобиля, спроектируйте автомобиль. Найдите параметры автомобиля, одновременно максимально близкому к высокоскоростному и большегрузному.</i></li>
+                <hr>
+            </ul>
+        </details>
+   </div>
+</div>
+
+<h1>Видео:</h1>
+<video width="640" height="360" controls><source src="../../../img/lection12/121.mp4" type="video/mp4" ></video><br>
+<video width="640" height="360" controls><source src="../../../img/lection12/122.mp4" type="video/mp4" ></video><br>
+<script>
+        // чтобы два видео не проигрывались вместе
+        const videos = Array.from(document.querySelectorAll('video'));
+        let playing = true;
+        videos.forEach(video => {
+        video.addEventListener('play', function() {
+            if (playing) {
+                    videos.forEach(el => {
+                    el.pause();
+
+                });
+            }   
+        if (this.paused) {
+            playing = false;
+            this.play();
+
+        } 
+        else {playing = true;}
+        });
+    });
+
+    //чтобы видео останавливалось при закрытии окна
+    function stop_video(){
+        videos.find(video=>video.paused===false).pause();
+    };
+</script>
+
+    
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection11.html" title="Лекция&nbsp;11. От модели к задаче. Алгоритм решения задачи" class="small-link">Лекция&nbsp;11. От модели к задаче. Алгоритм решения задачи</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection13.html" title="Лекция&nbsp;13. Метод искусственного интеллекта #3. Оценочная функция" class="small-link">Лекция&nbsp;13. Метод искусственного интеллекта #3. Оценочная функция</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection09.html" title="Лекция 09. Интеллект, разум, ум (обобщение и повторение)" class="black-link">Л 09</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection10.html" title="Лекция 10. Понятие модели. Система моделей окружающего нас мира. Думать – значит моделировать." class="black-link">Л 10</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection11.html" title="Лекция 11. От модели к задаче. Алгоритм решения задачи" class="black-link">Л 11</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 12</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection13.html" title="Лекция 13. Метод искусственного интеллекта #3. Оценочная функция" class="black-link">Л 13</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection14.html" title="Лекция 14. Метод искусственного интеллекта #4. Машина из бусинок" class="black-link">Л 14</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection15.html" title="Лекция 15. Метод искусственного интеллекта #5. Экспертная система" class="black-link">Л 15</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>

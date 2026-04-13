@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 49. Повторение. Закрепление. Обобщение</TITLE>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center">
+<table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../.../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection46.html" title="Лекция 46. Примеры применения нейросетей" class="black-link">Л 46</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection47.html" title="Лекция 47. Роботы и чувства, три закона робототехники" class="black-link">Л 47</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection48.html" title="Лекция 48. Метод ИИ #9. Алгоритм построения дерева индуктивных решений (ID3)" class="black-link">Л 48</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 49</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection50.html" title="Лекция 50. Язык как система. Закономерности русского языка" class="black-link">Л 50</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection51.html" title="Лекция 51. Понимание незнакомого текста – построение модели. Понимать смысл – дешифровать текст" class="black-link">Л 51</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection52.html" title="Лекция 52. Иерархия языка – мега и мета система" class="black-link">Л 52</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1 style="color: blue;">Лекция 49.<br>Повторение. Закрепление. Обобщение</h1>
+</div>
+
+<!--Основной текст-->
+<div>
+    <p>Подведём кратко итоги по тем методам, которые мы уже рассмотрели.</p>
+    <ol>
+        <li><b style="color: red;">Оценочная функция</b>. Доказано, что с помощью простого правила вполне можно решить сложную интеллектуальную задачу. Но неясно, как найти такое правило. Правило предлагает человек, руководствуясь собственным умом. Само правило ещё не вполне уравнение. Но сложный мир в своей основе устроен просто.</li>
+        <li><b style="color: red;">Бусеничная машина</b>. Самообучается, помечая неверный опыт в дереве. Находит траектории, ведущие к цели. Но не обобщает. Уравнение не выводит. </li>
+        <li><b style="color: red;">Экспертная система</b>. Самообучается, настраивая уравнения. Преимущество - коэффициенты ищет сама система. Недостаток - вид уравнения задаёт человек. 
+            Но это уже уравнение. Неясно, какой сложности должно быть <b style="color: red;">уравнение</b>. В уравнении нет смещения (сдвига, свободного члена). Модель мира экспертной системы – гиперобласти в пространстве признаков, уравнения. </li>
+        <li><b style="color: red;">Регрессия</b>. Закон регрессии задаёт человек, система только подбирает коэффициенты уравнения. Достоинство состоит в том, что ИИ может настроить уравнения любой сложности. Допустимы нелинейные модели. В модели допустимы все математические операции. Метод обеспечивает решение обратных задач. И достоинство, и недостаток состоит в том, что метод учитывает все действующие факторы. По значениям коэффициентов можно понять значимость каждого. Признаки становятся взаимозаменяемыми, что не всегда возможно в реальности.</li>
+        <li><b style="color: red;">Автопрограммирование</b>. По заданным законам метод ИИ сам строит алгоритмы, сам решает задачи, включая обратные.</li>
+        <li><b style="color: red;">Дерево решений</b>. Метод ищет простейшее правило, концентрируя информацию в записи за счет минимизации энтропии. Отсекает неважное, используя тезис о том, что «мир в своей основе прост». Основа мира – равновесие (уравнение). Мир - это баланс хаоса и порядка (энтропия). Недостаток метода в его дискретности – нет наклонов правил, границы областей параллельны осям координат (признакам).</li>
+        <li><b style="color: red;">Косинусы</b>. Метод выделяет и минимизирует размерность пространства координат (ощущений). Измеряет сходства-различия. Строит классификации, определения понятий. Оптимизирует базы данных. Недостаток метода – зависимость от положения точки наблюдения.</li>
+        <li><b style="color: red;">K-means</b> – метод классификации. Находит компактные области в пространстве признаков. Разбивает сложное на простое наилучшим образом. Недостаток – чувствителен к начальным данным.</li>
+        <li><b style="color: red;">Нейронная сеть</b>. Самообучается. Выводит законы, описания областей, учитывая опыт в связях нейронов. Обеспечивает наклоны правил, выводит абстракции. Образует гиперпространство. Настраивает коэффициенты модели. Недостатки - сложность и размерность модели задаёт человек, отсутствие механизма умножения сигналов приводит к чрезмерному увеличению модели.</li>
+        <li><b style="color: red;">Генетические алгоритмы</b>. Самостоятельно подбирает закон в рамках заданной человеком алгебры. Самообучается. Метод реализует основные идеи эволюции. Модель среды приходится создавать вручную.</li>
+        <li><b style="color: red;">Логические уравнения</b>. Язык описания ситуаций. Уравнения составляет человек. Можно найти решение обратной задачи.</li>
+        <li><b style="color: red;">Автоматы</b>. Метод имитирует коллективное поведение элементов множества. Обеспечивает целесообразное поведение индивидуума. Ищет равновесие множества противоречивых факторов.</li>
+    </ol>
+    <details>  
+        <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+        <ul class="tasks_list"><hr>
+            <li><i>Расставьте методы по порядку использования таким образом, чтобы они компенсировали недостатки друг друга. </i></li>
+        <hr></ul>
+    </details>
+</div>
+<br><br><br>
+		<h1 style="color: blue;">Презентация:</h1><embed src="../../../docs/presentation4.pdf" type="application/pdf" width="100%" height="700px" display="block">
+<br><br><br>
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection48.html" title="Лекция&nbsp;48. Метод ИИ #9. Алгоритм построения дерева индуктивных решений (ID3)" class="small-link">Лекция&nbsp;48. Метод ИИ #9. Алгоритм построения дерева индуктивных решений (ID3)</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection50.html" title="Лекция&nbsp;50. Язык как система. Закономерности русского языка" class="small-link">Лекция&nbsp;50. Язык как система. Закономерности русского языка</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection46.html" title="Лекция 46. Примеры применения нейросетей" class="black-link">Л 46</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection47.html" title="Лекция 47. Роботы и чувства, три закона робототехники" class="black-link">Л 47</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection48.html" title="Лекция 48. Метод ИИ #9. Алгоритм построения дерева индуктивных решений (ID3)" class="black-link">Л 48</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 49</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection50.html" title="Лекция 50. Язык как система. Закономерности русского языка" class="black-link">Л 50</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection51.html" title="Лекция 51. Понимание незнакомого текста – построение модели. Понимать смысл – дешифровать текст" class="black-link">Л 51</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection52.html" title="Лекция 52. Иерархия языка – мега и мета система" class="black-link">Л 52</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>

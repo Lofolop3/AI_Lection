@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 15. Метод искусственного интеллекта #5. Экспертная система</TITLE>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center"
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection12.html" title="Лекция 12. Метод искусственного интеллекта #2. Автопрограммирование" class="black-link">Л 12</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection13.html" title="Лекция 13. Метод искусственного интеллекта #3. Оценочная функция" class="black-link">Л 13</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection14.html" title="Лекция 14. Метод искусственного интеллекта #4. Машина из бусинок" class="black-link">Л 14</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 15</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection16.html" title="Лекция 16. Интерфейсы искусственного интеллекта. Моделирование пространственных систем" class="black-link">Л 16</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection17.html" title="Лекция 17. Интерфейсы искусственного интеллекта. Моделирование поведения систем во времени" class="black-link">Л 17</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection18.html" title="Лекция 18. Интерфейсы искусственного интеллекта. Модель текста" class="black-link">Л 18</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table
+><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1>Лекция 15. <br>Метод искусственного интеллекта #5. Экспертная система</h1>
+</div>
+
+<div>
+    <div>
+       <p>И всё-таки хотелось бы увидеть правило, которое, обучаясь, выводит машина. Допустим, мы хотим, чтобы машина отличала
+    одни объекты от других по наличию в экспериментальном
+    образце набора определённых признаков. </p>
+    <p>Для примера [Нейлор] предположим, что на вход системы будут подаваться признаки объектов: <i>x1</i>-крылья,
+        <i>x2</i>-хвост, <i>x3</i>-клюв, <i>x4</i>-двигатель, <i>x5</i>-оперение, <i>x6</i>-шасси.
+        На выходе система будет определять, к какому из классов относится объект: <i>y1</i>-птица, <i>y2</i>-самолет,
+        <i>y3</i>-планер.
+        Если <i>у</i> неизвестного объекта признак присутствует, то значение переменной x<sub>i</sub> будет равно 1, иначе
+        0. Если мы не можем точно сказать,
+        обладает ли хвостом птица или нет, то можно сообщить <i>х2=0.5</i>. </p>
+    <p>Вектор <var class="vector">X<span></span></var> = &lt;x1,x2,x3,x4,x5,x6&gt; - это последовательность признаков
+        испытуемого объекта,
+        вектор <var class="vector">Y</var> = &lt;y1,y2,y3&gt; - последовательность классов, к одному из которых возможно
+        относится предъявляемый системе объект.
+        Зависимость <var class="vector">Y</var> = F(<var class="vector">X</var>) указывает на связь
+        <var class="vector">X</var> и <var class="vector">Y</var>.</p>
+
+    <p>Так, например, если системе показать птицу <i>&lt;1,1,1,0,1,0&gt;</i>, то есть
+        <i>х1=1</i> (крылья есть), <i>х2=1</i> (хвост есть), <i>х3=1</i> (клюв есть), <i>х4=0</i> (двигателя нет),
+        <i>х5=1</i> (оперение есть), <i>х6=0</i> (шасси нет),
+        то система должна сказать: <var class="vector">Y</var> = &lt;1,0,0&gt;, то есть <i>y1=1</i> (это птица), <i>y2=0</i>
+        (это не самолет), <i>y3=0</i> (это не планер). </p>
+
+    <p>Начнем с простого и предположим, что связь между признаками <var class="vector">X</var> и классами
+        <var class="vector">Y</var> линейная. <br>Тогда:</p>
+    <div margin-left="auto" margin-right="auto">
+        <p style="text-align: center; font-weight: bold;">y<sub>1</sub>=
+            a<sub>11</sub>*x<sub>1</sub>+a<sub>12</sub>*x<sub>2</sub>+a<sub>13</sub>*x<sub>3</sub>+a<sub>14</sub>*x<sub>4</sub>+a<sub>15</sub>*x<sub>5</sub>+a<sub>16</sub>*x<sub>6</sub>
+        </p>
+        <p style="text-align: center; font-weight: bold;">y<sub>2</sub>=
+            a<sub>21</sub>*x<sub>1</sub>+a<sub>22</sub>*x<sub>2</sub>+a<sub>23</sub>*x<sub>3</sub>+a<sub>24</sub>*x<sub>4</sub>+a<sub>25</sub>*x<sub>5</sub>+a<sub>26</sub>*x<sub>6</sub>
+        </p>
+        <p style="text-align: center; font-weight: bold;">y<sub>3</sub>=
+            a<sub>31</sub>*x<sub>1</sub>+a<sub>32</sub>*x<sub>2</sub>+a<sub>33</sub>*x<sub>3</sub>+a<sub>34</sub>*x<sub>4</sub>+a<sub>35</sub>*x<sub>5</sub>+a<sub>36</sub>*x<sub>6</sub>,
+        </p>
+
+        <p>где <i>a<sub>ij</sub></i> - числовой коэффициент, указывающий на вес <i>j</i>-го признака в решении, что объект
+            принадлежит <i>i</i>-му классу.
+            Чем больше баллов набирает вектор <var class="vector">X</var> в <i>i</i>-м уравнении, тем больше значение
+            <i>y<sub>i</sub></i>
+            по сравнению с другими компонентами вектора <var class="vector">Y</var>.</p>
+
+        <p>Поэтому окончательное решение принимается по <b style="color: red;">мажоритарному</b> принципу:
+            <i>max(y<sub>1</sub>,y<sub>2</sub>,y<sub>3</sub>)</i>.
+            <i>y<sub>i</sub></i> называются демонами, каждый из которых голосует своим значением за своего <i>i</i>-го
+            кандидата при выборе ответа -
+            «<b style="color: red;">кто громче крикнет, тот и прав</b>». Чем больше количество баллов <i>у</i> <i>y<sub>i</sub></i> по сравнению
+            с остальными, тем точнее ответ системы.</p>
+        <p>Предъявляя системе конкретные примеры, мы тем самым обучаем её, влияя на значения коэффициентов
+            <i>a<sub>ij</sub></i>. Каждый пример увеличивает свой набор коэффициентов
+            и уменьшает наборы коэффициентов конкурентов. Коэффициенты представим матрицей:</p>
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr style="background-color: #c0b6ff;">
+                <th></th>
+                <th><b>Y1</b></th>
+                <th><b>Y2</b></th>
+                <th><b>Y3</b></th>
+            </tr>
+            <tr>
+                <td style="background-color: #c0b6ff;"><b>X1</b></td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+            </tr>
+
+            <tr>
+                <td style="background-color: #c0b6ff;"><b>X2</b></td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+            </tr>
+
+            <tr>
+                <td style="background-color: #c0b6ff;"><b>X3</b></td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+            </tr>
+            <tr>
+                <td style="background-color: #c0b6ff;"><b>X4</b></td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+            </tr>
+            <tr>
+                <td style="background-color: #c0b6ff;"><b>X5</b></td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+            </tr>
+            <tr>
+                <td style="background-color: #c0b6ff;"><b>X6</b></td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+            </tr>
+        </table>
+
+        <p>Покажем системе птицу. Вектор <i><var class="vector">X</var> = (111010)</i> прибавляется (поощрение!)
+            к столбцу <i>y<sub>1</sub></i> и вычитается (наказание!) из столбцов <i>y<sub>2</sub></i> и
+            <i>y<sub>3</sub></i>.
+            Применен <b style="color: red;">принцип обучения</b> «наказывай за неверное и поощряй за правильное», так называемый <b style="color: red;">принцип
+                «кнута и пряника»</b>.</p>
+        <p>Например, прибавляя к первому столбцу <i>(0,0,0,0,0,0)</i> покомпонентно вектор <i>(1,1,1,0,1,0)</i>, получаем
+            новое значение этого столбца <i>(1,1,1,0,1,0)</i>.</p>
+        <p>Второй столбец наказываем, так как птица не есть самолет: из второго столбца <i>(0,0,0,0,0,0)</i> вычитаем вектор
+            <i>(1,1,1,0,1,0)</i>.
+            Получаем новое значение столбца: ,<i>(-1,-1,-1,0,-1,0)</i>. И так далее…</p>
+        <p>Матрица после обучения примеру <i>1</i>, «птица», получается следующего вида:</p>
+
+        <table id="tabl-2" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </table>
+
+        <p>Предъявим системе самолет <var class="vector"><i>Y</i></var> = <i>(0,1,0)</i>. Он обладает крыльями
+            (<i>x1=1</i>), хвостом (<i>x2=1</i>),
+            не имеет клюва (<i>x3=0</i>), имеет двигатель (<i>x4=1</i>), не имеет оперения (<i>x5=0</i>), имеет шасси
+            (<i>x6=</i>1).
+            Вектор (<i>110101</i>) прибавляется (поощрение!) к столбцу <i>y<sub>2</sub></i> предыдущей матрицы и вычитается
+            (наказание!) из столбцов
+            <i>y<sub>1</sub></i> и <i>y<sub></sub>3</i>. Получаем следующий вид матрицы после обучения примеру <i>2</i>:</p>
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>-2</td>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+                <td>-2</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>-1</td>
+            </tr>
+        </table>
+
+        <p>Предъявим системе объект третьего класса – планер, <var class="vector"><i>Y</i></var> = <i>(0,0,1)</i>.
+            Вектор (<i>110000</i>) прибавляется (поощрение!) к столбцу <i>y<sub>3</sub></i> предыдущей матрицы и вычитается
+            (наказание!) из столбцов
+            <i>y<sub>1</sub></i> и <i>y<sub>2</sub></i>. Получаем матрицу после обучения примеру <i>3</i> следующего вида:
+        </p>
+
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td>-1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>-1</td>
+            </tr>
+        </table>
+
+        <p>Для проверки результата обучения переведём систему в режим экспертизы. Предъявим ей в качестве примера «птицу».
+            Для этого умножим вектор <i>(111010)</i> на матрицу коэффициентов <i>a<sub>ij</sub></i>: </p>
+
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr style="background-color:white;">
+                <td><b style="color: red;">(1 1 1 0 1 0) * </b></td>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+                <td> = <b style="color: red;">max(0,-4,-4) &rarr; птица </b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <p>Результат умножения строки «птица» на первый столбец равен <i>1*(-1)+1*(-1)+1*1+0*(-1)+1*1+0*(-1)=0.</i>
+            Результат умножения на второй столбец равен <i>1*(-1)+1*(-1)+1*(-1)+0*1+1*(-1)+0*1=-4</i>.
+            Результат умножения на третий столбец равен <i>1*(-1)+1*(-1)+1*(-1)+0*(-1)+1*(-1)+0*(-1)=-4</i>.</p>
+        <p>Теперь из вектора демонов <i>(0, -4, -4)</i> следует выбрать компоненту, характеризуемую максимальным числом. Она
+            соответствует классу <i>y<sub>1</sub></i>,
+            то есть предъявленный объект «птица» и опознан как «птица». </p>
+        <p>Предъявим системе в качестве примера «самолет» <i>(110101)</i>. Для экспертизы умножим вектор <i>(110101)</i> на
+            обученную матрицу коэффициентов <i>a<sub>ij</sub></i>:</p>
+
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr style="background-color:white;">
+                <td><b style="color: red;">(1 1 0 1 0 1) * </b></td>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+                <td> = <b style="color: red;">max(-4, 0,-4) &rarr; самолёт </b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <p>Результат умножения на первый столбец равен <i>1*(-1)+1*(-1)+0*1+1*(-1)+0*1+1*(-1)=-4</i>.</p>
+        <p>Результат умножения на второй столбец равен <i>1*(-1)+1*(-1)+0*(-1)+1*1+0*(-1)+1*1=0</i>.</p>
+        <p>Результат умножения на третий столбец равен <i>1*(-1)+1*(-1)+0*(-1)+1*(-1)+0*(-1)+1*(-1)=-4</i>.</p>
+        <p>Из вектора <i>(-4, 0, -4)</i> выбран класс, характеризуемый максимальным числом. Это класс <i>y<sub>2</sub></i>.
+            То есть предъявленный объект «самолет» и
+            опознан как «самолет». </p>
+        <p>Предъявим системе в качестве примера «планер» <i>(110000)</i>. Для экспертизы умножим вектор <i>(110000)</i> на
+            матрицу:</p>
+
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr style="background-color:white;">
+                <td><b style="color: red;">(1 1 0 0 0 0) * </b></td>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+                <td> = <b style="color: red;">max(-2, -2,-2) &rarr; ? </b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+        </table>
+
+        <p>Результат умножения на первый столбец равен <i>1*(-1)+1*(-1)+0*1+0*(-1)+0*1+0*(-1)=-2</i>.</p>
+        <p>Результат умножения на второй столбец равен <i>1*(-1)+1*(-1)+0*(-1)+0*1+0*(-1)+0*1=-2</i>.</p>
+        <p>Результат умножения на третий столбец равен <i>1*(-1)+1*(-1)+0*(-1)+0*(-1)+0*(-1)+0*(-1)=-2</i>.</p>
+        <p>Из вектора <i>(-2, -2, -2)</i> невозможно выбрать класс, характеризуемый <b style="color: red;">максимальным</b> числом.
+            Предъявленный объект не опознан. Следует продолжать обучение.
+            Для этого используем принцип «<b style="color: red;">повторение – мать учения</b>» и предъявим системе ещё раз «планер»
+            <i>(110000)</i>.</p>
+
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td>-2</td>
+                <td>-2</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>-2</td>
+                <td>-2</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>-1</td>
+            </tr>
+        </table>
+
+        <p>Чтобы система не выходила за гиперкуб, то есть, чтобы в матрице коэффициентов не накапливались числа по модулю
+            больше <i>1</i>, скорректируем значения коэффициентов матрицы,
+            вернув их на ближайшую границу (<i>1</i> или <i>-1</i>). Кстати, это можно было сделать на предыдущей операции,
+            когда система вышла за гиперкуб. Однако, поскольку общей теории на
+            этот счет нет (иногда выход за гиперкуб полезен для устойчивой работы системы, иногда - нет), то оставляют
+            принятие решения о нормализации матрицы на усмотрение
+            пользователя. (В программном продукте появляется кнопка «Нормализовать», которую нажимает (или не нажимает)
+            пользователь).</p>
+
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td>-1</td>
+                <td>-1</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>-1</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+            </tr>
+            <tr>
+                <td>-1</td>
+                <td>1</td>
+                <td>-1</td>
+            </tr>
+        </table>
+
+        <p>Проверка птицы показывает <i>(0, -4, -2)</i> - птица опознана правильно. Проверка самолета показывает <i>(-4, 0,
+                -2)</i> - самолет опознан правильно.
+            Проверка планера показывает <i>(-2, -2, 0)</i> - планер опознан правильно.</p>
+        <p>После четырех итераций обучения система устойчиво опознаёт каждый из предъявляемых ей классов. Уверенность
+            системы измеряется расстоянием между компонентами вектора <i>{Y}</i>.</p>
+        <p>Вычислим разницу векторов (определений классов) <b style="color: red;">по хэминговой мере</b>:<br>
+            Птица – Самолет = <i>(1, 1, 1, 0, 1, 0) - (1, 1, 0, 1, 0, 1) = 4</i> (эти два вектора отличаются друг от друга в
+            четырех позициях, в каждой позиции отличие составит <i>1</i>). </p>
+        <p>Для примера сделаем вычитание векторов столбиком:</p>
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td style="background-color:white">1</td>
+                <td style="background-color:white">1</td>
+                <td style="background-color:white">1</td>
+                <td style="background-color:white">0</td>
+                <td style="background-color:white">1</td>
+                <td style="background-color:white">0</td>
+                <td>Вектор y <sub>1</sub> "птица"</td>
+            </tr>
+
+            <tr>
+                <td style="background-color:white">1</td>
+                <td style="background-color:white">1</td>
+                <td style="background-color:white">0</td>
+                <td style="background-color:white">1</td>
+                <td style="background-color:white">0</td>
+                <td style="background-color:white">1</td>
+                <td>Вектор y <sub>2</sub> "самолёт"</td>
+            </tr>
+
+            <tr>
+                <td style="background-color:#c0b6ff">|1 - 1|</td>
+                <td style="background-color:#c0b6ff ">|1 - 1|</td>
+                <td style="background-color:#c0b6ff ">|1 - 0|</td>
+                <td style="background-color:#c0b6ff ">|0 - 1|</td>
+                <td style="background-color:#c0b6ff ">|1 - 0|</td>
+                <td style="background-color:#c0b6ff ">|0 - 1|</td>
+                <td>Сумма различий = 4</td>
+            </tr>
+        </table>
+        <p>Далее: Птица – Планер = <i>y<sub>1</sub></i>-<i>y<sub>3</sub></i> = <i>(1, 1, 1, 0, 1, 0) - (1, 1, 0, 0, 0, 0) =
+                2</i></p>
+        <p>Самолет – Планер = <i>y<sub>2</sub></i>-<i>y<sub>3</sub></i> = <i>(1, 1, 0, 1, 0, 1) - (1, 1, 0, 0, 0, 0) = 2</i>
+        </p>
+        <p>Нарисуем объекты, как они располагаются в мире, и обозначим расстояния между ними.</p>
+        <div style="text-align: center; color: blue;"><img id="ris-" src="../../../img/lection15/theme15_pict1.png" style="width: 50%; height:50%;"></div>
+        
+        <p>Мы использовали внешнюю информацию <i>{Х}</i> о положении изучаемых объектов в мире. То есть это описание «мира»,
+            каков мир есть. Мир представлен нам экспериментальными данными, примерами.</p>
+        <p>Заметим, что модель «мира» отличается от описания самого «мира» и находится в обученной матрице, в мозге
+            экспертной системы. Ищем различия между построенными системой
+            классами, то есть вычитаем один столбец матрицы коэффициентов из другого. Тем самым мы подсчитываем разницу
+            между классами «птица», «самолет», «планер» в сознании самой
+            системы, которая как-то отражает сейчас наблюдаемый ею мир.</p>
+        <p>Вычисляем модель в мозге системы, определив различия между объектами в «сознании» системы, то есть в
+            коэффициентах <i>a<sub>ij</sub></i>. </p>
+        <div style="text-align: center; color: blue;"><img id="" src="../../../img/lection15/theme15_table11.png" style="width: 100%; height:100%;"></div>
+        <p>Обратите внимание, рисунок «Объекты в «мире» и рисунок «Объекты в «сознании» системы» не совпадают, но в чём-то
+            <b style="color: red;">подобны</b>. Планер, например, находится между самолетом и
+            птицей. Мир мозгом познан не абсолютно. Модель не является 100% отражением мира, однако является его подобием.
+            Если продолжать обучать систему примерами, то
+            виртуальная модель «мира в сознании системы» <b style="color: red;">будет приближаться</b> к модели реального «мира». </p>
+        <p>Обратите внимание, что система сама пришла к выводу, что мир её объектов двухмерен. Размерность пространства мира
+            продиктована не нашими желаниями,
+            а свойствами меры и объектов в нём.</p>
+        <p><b style="color: red;"><i>Прогноз – важнейшее свойство ЭС</i></b></p>
+        <p>Важнейшим свойством интеллектуальных систем является их способность работать с новыми объектами, которые им ранее
+            при обучении не предъявлялись. Это говорит о том, что
+            система есть <b style="color: red;">не база данных</b>, содержащая набор всех фактов, <b style="color: red;">а модель</b> - знание, зависимость,
+            уравнение. В уравнение вшита способность описывать множество значений
+            переменных, удовлетворяющих ему. <b style="color: red;">Модель обобщает данные, устанавливая причинно-следственную связь.</b></p>
+        <p><b style="color: red;">Построение модели, вывод знания из фактов - цель и отличительная особенность ИИ.</b></p>
+        <p>Испытаем способность построенной модели к предсказанию на новом неизвестном ей из предыдущих примеров объекте.
+            Система ищет наиболее похожий к нему из известных ей классов.
+            Предъявим экспертной системе ракету <i>(010100)</i>. Если ассоциация будет верна, то система интеллектуальна.
+        </p>
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">0</td>
+                <td></td>
+            </tr>
+            <tr style="background-color:white;">
+                <td><b style="color: red;">(0 1 0 1 0 0) * </b></td>
+                <td>1</td>
+                <td>-1</td>
+                <td>-1</td>
+                <td> = <b style="color: red;">max(-2, 0,-1) &rarr; "самолёт" </b></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="background-color:white;">-1</td>
+                <td style="background-color:white;">1</td>
+                <td style="background-color:white;">-1</td>
+                <td></td>
+            </tr>
+        </table>
+        <p>Ракета опознаётся как самолет (класс <i>y<sub>2</sub></i>), что в принципе верно. Уверенность опознания при этом
+            системы снизилась, например, расстояние между баллами,
+            что «ракета — это планер», и баллами, что «ракета — это самолет», равно <i>1</i>.</p>
+        <p>Найдем на рисунке, где в «мире» находится ракета.<br>
+            Птица – Самолет = <i>(1, 1, 1, 0, 1, 0) - (1, 1, 0, 1, 0, 1) = 4</i><br>
+            Птица – Планер = <i>(1, 1, 1, 0, 1, 0) - (1, 1, 0, 0, 0, 0) = 2</i><br>
+            Самолет – Планер = <i>(1, 1, 0, 1, 0, 1) - (1, 1, 0, 0, 0, 0) = 2</i><br>
+            Птица - Ракета = <i>(1, 1, 1, 0, 1, 0) – (0, 1, 0, 1, 0, 0) = 4</i><br>
+            Самолет – Ракета = <i>(1, 1, 0, 1, 0, 1) – (0, 1, 0, 1, 0, 0) = 2</i><br>
+            Планер – Ракета = <i>(1, 1, 0, 0, 0, 0) – (0, 1, 0, 1, 0, 0) = 2</i><br>
+        </p>
+        <p>Проведем на рисунке циркулем окружности радиусами, равными вычисленным расстояниям, от центров соответствующих
+            классов, и найдем место, где точки на окружностях наиболее
+            близки друг к другу.</p>
+        <div style="text-align: center; color: blue;"><img id="" src="../../../img/lection15/theme15_pict2.png" style="width: 50%; height:50%;"></div>
+        <p>Подставляя значения найденных коэффициентов <i>a<sub>ij</sub></i> в уравнения
+            <var class="vector">Y</var> = F(<var class="vector">X</var>), имеем:</p>
+        <p style="text-align: center; font-weight: bold;">Y<sub>1</sub> =
+            -x<sub>1</sub>-x<sub>2</sub>+x<sub>3</sub>-x<sub>4</sub>+x<sub>5</sub>-x<sub>6</sub></p>
+        <p style="text-align: center; font-weight: bold;">Y<sub>2</sub> =
+            -x<sub>1</sub>-x<sub>2</sub>-x<sub>3</sub>+x<sub>4</sub>-x<sub>5</sub>+x<sub>6</sub></p>
+        <p style="text-align: center; font-weight: bold;">Y<sub>3</sub> =
+            -x<sub>3</sub>-x<sub>4</sub>-x<sub>5</sub>-x<sub>6</sub>.</p>
+        <p>Уравнения представляют собой геометрически три гиперплоскости в шестимерном гиперпространстве признаков.
+            Плоскости делят пространство на полупространства
+            (в одной части полупространства - <i>Y&gt;0</i>, в другой – <i>Y&lt;0</i>, на границе <i>Y=0</i>). Пересечение
+            гиперплоскостей образует гипертела – классы
+            (класс «птицы», класс «самолеты», класс «планеры»).</p>
+        <p>Значения коэффициентов уравнений, которые подбирает система для разделения классов, в процессе её обучения
+            <b style="color: red;">изменяются</b>. Коэффициенты <i>a<sub>ij</sub></i> определяют наклон
+            гиперплоскостей к осям системы координат пространства. То есть гиперплоскости в процессе обучения
+            <b style="color: red;">вращаются</b>. Изменение положения гиперплоскостей происходит
+            таким образом, чтобы они встали, максимально четко <b style="color: red;">разделив</b> области (классы) друг от друга, –
+            <b style="color: red;">посредине</b> между классами. </p>
+        <p>Построим одно из двухмерных сечений шестимерного гиперпространства в плоскости листа. Например, рассматривая две
+            оси: <i>x3</i> (клюв) и <i>x4</i> (двигатель),
+            можно изобразить след разделяющей поверхности на этой плоскости: </p>
+        <p style="text-align: center; font-weight: bold;"> y<sub>1</sub> = …+x<sub>3</sub>-x<sub>4</sub>+…</p>
+        <p style="text-align: center; font-weight: bold;"> y<sub>2</sub> = …-x<sub>3</sub>+x<sub>4</sub>+…</p>
+        <p style="text-align: center; font-weight: bold;">y<sub>3</sub> = …-x<sub>3</sub>-x<sub>4</sub>+…</p>
+        <p>Уравнение плоскости для <i>y<sub>1</sub>: x<sub>3</sub>-x<sub>4</sub>=0</i> или <i>x3 = x4</i>. На этой линии
+            расположены точки, удовлетворяющие уравнению
+            <i>y<sub>1</sub>=0</i>. Такая прямая (гиперплоскость) называется разделяющим правилом, так как по одну её
+            сторону расположены одни классы, а по другую – другие классы.</p>
+        <p>Класс птиц <i>y<sub>1</sub></i> представлен объектом в точке (<i>x<sub>3</sub>=1,x<sub>4</sub>=0</i>), то есть
+            «клюв есть», «двигателя нет». Класс самолетов <i>y<sub>2</sub></i> представлен объектом
+            в точке (<i>x<sub>3</sub>=0,x<sub>4</sub>=1</i>), то есть «клюва нет», «двигатель есть». Поставим на осях эти
+            точки с указанными координатами. </p>
+        <p>Разделяющая линия <i>x<sub>3</sub>=x<sub>4</sub></i> проведена так, что находится на максимальном удалении от
+            обоих классов, что обеспечивает им максимальное различение системой
+            (расстояние до разделяющей линии). </p>
+        <p>Нестандартные объекты (экзотическая птица, игрушечный самолет) могут проникать в чужое полупространство и
+            опознаваться неправильно. В таких случаях экспертную систему
+            необходимо доучивать повторением примеров или этими новыми примерами. В процессе дообучения разделяющие
+            плоскости будут продолжать поворачиваться так, чтобы ещё
+            лучше разделить классы между собой с учетом новой информации. Каждая точка подтягивает к себе соответствующую
+            разделяющую плоскость или отталкивает.</p>
+        <p>Рисунок показывает предполагаемое расположение разделяющих правил при наличии многих классов. Точками обозначены
+            экземпляры классов, гиперплоскостями – правила, областями - классы. </p>
+        <div style="display: flex; justify-content: space-between;">
+            <img src="../../../img/lection15/theme15_pict3.png" width="40%">
+            <img src="../../../img/lection15/theme15_pict4.png" width="40%">
+        </div>
+        <p>В итоге отметим уровень интеллектуальности метода: формулу придумал человек, наилучшие коэффициенты модели
+            подобрала машина.</p>
+        <p><b style="color: red;">Генетическая связь экспертной системы и регрессионной модели</b></p>
+        <p>Посмотрим на задачу с другой стороны.</p>
+
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr style="background-color: #c0b6ff;">
+                <th></th>
+                <th>Крылья, X1</th>
+                <th>Хвост, X2</th>
+                <th>Клюв, X3</th>
+                <th>Двигатель, X4</th>
+                <th>Оперение, X5</th>
+                <th>Шасси, X6</th>
+            </tr>
+            <tr>
+                <th style="background-color: #c0b6ff;">Птица, Y1</th>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">0</td>
+            </tr>
+            <tr>
+                <th style="background-color: #c0b6ff;">Самолёт, Y2</th>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">1</td>
+            </tr>
+            <tr>
+                <th style="background-color: #c0b6ff;">Планер, Y3</th>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+            </tr>
+
+        </table>
+
+        <p>Посмотрите внимательно, столбец Х3 повторяет столбец <i>Х5</i>. Таким образом, один из признаков дублирует
+            полностью другой и одним из них можно пренебречь.
+            Также дублируются столбцы <i>Х4</i> и <i>Х6</i>. </p>
+        <p>Заметим, что столбцы Х1 и Х2 не только дублируют друг друга, но от них вообще ничего не зависит, у всех классов
+            всегда есть крылья и хвост.
+            Это вообще неинформативные признаки, не дифференцирующие, с помощью их ни что ни от чего отличить нельзя.
+            Исключаем столбцы <i>Х1</i> и <i>Х2</i> из базы данных.
+            Закодируем признак <i>Y</i> - переведем его из качественной области (птица, самолет, планер) в количественную
+            <i>(0,8,4)</i>. Логично, что планер находится где-то между птицей и
+            самолетом, как мы это ранее выяснили.</p>
+        <p>Исходные данные для построения модели упрощаются:</p>
+
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <tr style="background-color: #c0b6ff;">
+                <th></th>
+                <th>Значение Y</th>
+                <th>Клюв, X3<br>Оперение, X5</th>
+                <th>Двигатель, X4<br>Шасси, X6</th>
+            </tr>
+            <tr>
+                <th style="background-color: #c0b6ff;">Птица, Y1</th>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">1</td>
+                <td style="background-color: white">0</td>
+            </tr>
+            <tr>
+                <th style="background-color: #c0b6ff;">Самолёт, Y2</th>
+                <td style="background-color: white">8</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">1</td>
+            </tr>
+            <tr>
+                <th style="background-color: #c0b6ff;">Планер, Y3</th>
+                <td style="background-color: white">4</td>
+                <td style="background-color: white">0</td>
+                <td style="background-color: white">0</td>
+            </tr>
+        </table>
+
+        <p>Ищем уравнение в линейном виде: <i>Y = a*X3+b*Х4+c</i>. Для этого составим три уравнения, исходя из трех строк
+            базы данных.</p>
+        <div style="text-align: center; color: blue;"><img id="" src="../../../img/lection15/theme15_pict5.png" style="width: 20%; height:20%;"></div>
+        <p>Решая систему уравнений, получаем: <i>a=-4, b=4, c=4</i>. Или <i><b style="color: red;">Y = -4*X3 + 4*X4 +4.</b></i></p>
+        <p>Проиллюстрируем геометрически полученную модель. Поставим точки (записи базы данных, экземпляры, факты),
+            используя их координаты на осях
+            <i>Х3</i> и <i>Х4</i>, – птица <i>(0,1)</i>, самолет <i>(1,0)</i>, планер <i>(0,0)</i>.</p>
+        <p>Изобразим плоскость <i><b style="color: red;">Y = -4*X3 + 4*X4 +4</b></i> для разных значений <i>Y={0,4,8}</i> в виде семейства
+            параллельных прямых в виде следов пересечения плоскости
+            модели <i>Y=f(X3,X4)</i> и плоскостей Y=const, спроецированных на двухмерную координатную плоскость
+            <i>(X3,X4)</i>. При <i>Y=0</i> имеем:
+            <i>0=-4*Х3+4*Х4+4</i> или <i>Х3=Х4+1</i>. При <i>Y=4</i> имеем: <i>4=-4*Х3+4*Х4+4</i> или <i>Х3=Х4</i>. При
+            <i>Y=8</i> имеем <i>8=-4*X3+4*X4+4</i> или <i>Х3=Х4-1</i>.</p>
+        <div style="text-align: center; color: blue;"><img id="" src="../../../img/lection15/theme15_table15.png" style="width: 100%; height:100%;"></div>
+        <p>Видно, что при <i>Y=0</i> значение класса <i>Y</i> соответствует <i>Птице</i>. При <i>Y=4</i> – классу
+            <i>Планер</i>. При <i>Y=8</i> – классу <i>Самолет</i>.
+            Плоскость регрессионной модели проходит через соответствующую точку.</p>
+        <p>Отметим, что расстояние по координате <i>Y</i> от класса <i>Птица</i> до класса <i>Планер</i> равно <i>4</i>, от
+            <i>Планера</i> до <i>Самолета</i>
+            равно <i>4</i> (оранжевый треугольник), между классами <i>Птица</i> и <i>Самолет</i> расстояние <i>Y=8</i>, что
+            соответствует ранее построенному рисунку.</p>
+        <p>Как связаны между собой регрессионное уравнение <i><b style="color: red;">Y=-4X3+4*X4+4</b></i> и уравнения экспертной системы:</p>
+
+        <p style="text-align: center; font-weight: bold;">
+            Y<sub>1</sub>=-x<sub>1</sub>-x<sub>2</sub>+x<sub>3</sub>-x<sub>4</sub>+x<sub>5</sub>-x<sub>6</sub></p>
+        <p style="text-align: center; font-weight: bold;">
+            Y<sub>2</sub>=-x<sub>1</sub>-x<sub>2</sub>-x<sub>3</sub>+x<sub>4</sub>-x<sub>5</sub>+x<sub>6</sub></p>
+        <p style="text-align: center; font-weight: bold;">
+            Y<sub>3</sub>=-x<sub>3</sub>-x<sub>4</sub>-x<sub>5</sub>-x<sub>6</sub> ?</p>
+        <p>Убирая лишние <i>Х1</i> и <i>Х2</i>, сжимая дубли <i>Х3</i> и <i>Х5</i>, <i>Х4</i> и <i>Х6</i>, имеем: </p>
+
+        <p style="text-align: center; font-weight: bold;">Y<sub>1</sub>=+x<sub>3</sub>-x<sub>4</sub></p>
+        <p style="text-align: center; font-weight: bold;">Y<sub>2</sub>=-x<sub>3</sub>+x<sub>4</p>
+        <p style="text-align: center; font-weight: bold;">Y<sub>3</sub>=-x<sub>3</sub>-x<sub>4.</p>
+
+        <p>Если выбирать класс по признаку: <i>max(Y1,Y2,Y3)</i>, то для <i>Птицы Y1>Y2</i> и <i>Y1>Y3</i>, а, значит,
+            должны одновременно выполняться неравенство
+            <i>Х3-Х4>-X3+X4</i> и неравенство <i>X3-X4>-X3-X4</i>. Решая их совместно, получаем, что <i>Птицы</i> занимают
+            область <i><b style="color: red;">(Х3>X4)&(X3>0)</b></i>
+            в пространстве осей <i>{Х3,Х4}</i>.</p>
+        <p>Поскольку, экземпляр <i>Самолет</i> находится в области с <i>Y2>Y1</i> и <i>Y2>Y3</i>, а, значит,
+            <i>-Х3+Х4>X3-X4</i> и <i>-X3+X4>-X3-X4</i>, то <i>Самолеты</i> занимают
+            область <i><b style="color: red;">(Х4>X3)&(X4>0)</b></i> в пространстве осей <i>{Х3,Х4}</i>.</p>
+        <p>Поскольку, экземпляр <i>Планер</i> находится в области с <i>Y3>Y1</i> и <i>Y3>Y2</i>, а, значит,
+            <i>-Х3-Х4>X3-X4</i> и <i>-X3-X4>-X3+X4</i>, то <i>Планеры</i> занимают область
+            <i><b style="color: red;">(Х3&lt;0)&(X4&lt;0)</b></i> в пространстве осей <i>{Х3,Х4}</i>.</p>
+
+        <p>На рисунке это обозначено тремя областями, разделёнными тремя линиями-границами. Каждая область – определённый
+            класс.
+            В областях красными точками показаны типичные экземпляры каждого класса (<i>самолет, птица и планер</i>).</p>
+        <p>На рисунке совмещены две иллюстрации: области и границы модели экспертной системы и геометрический образ
+            регрессионной модели. В трёхмерном пространстве регрессионная
+            модель изображена в виде плоскости, области экспертной системы и их границы (<i>Х3=Х4, Х4=0, Х3=0</i>) выделены
+            на рисунке цветом.</p>
+        <div style="text-align: center; color: blue;"><img id="" src="../../../img/lection15/theme15_table16.png" style="width: 90%; height:90%;"></div>
+        <p><b style="color: red;">Следствя</b></p>
+        <ol class="tasks_list">
+            <li>Количество признаков соответствует размерности пространства. Объекты и факты – точки в пространстве
+                признаков, классы – гиперобласти.
+                Уравнения модели экспертной системы задают границы областей классов.</li>
+            <li>Удалённые примеры оттягивают на себя поверхность раздела классов.</li>
+            <li>Объекты вблизи поверхности раздела классов нечетки и могут быть ложно классифицированы.</li>
+            <li>Некоторые переменные оказывают бОльшее влияние на результат, чем другие. Это следует учитывать при
+                ранжировании вопросов, предъявляемых интеллектуальной
+                системой пользователю при экспертизе. </li>
+            <li>Некоторые переменные вообще не влияют на результат и их лучше исключить из экспертизы как неинформативные.
+            </li>
+            <li>Нормализация системы – выбор пользователя.</li>
+            <li>На скорость обучения системы существенно влияет величина шага обучения. С малым шагом система обучается
+                медленно, тупит, проявляя консерватизм. Большой шаг
+                соответствует разболтке системы, проявляя авантюризм. </li>
+            <li>Переменные могут принимать непрерывные значения, сигнализируя о нечёткости наших представлений при
+                различении объектов.</li>
+            <li>Несколько экспертных систем могут быть объединены в единую систему путем слияния обученных матриц
+                коэффициентов.</li>
+        </ol>
+
+        <p><i>Примечания</i>. При борьбе с неудачами при настройке системы можно использовать следующие приемы:</p>
+        <ul class="tasks_list">
+            <li>Введение в рассмотрение <b style="color: red;">дополнительного признака</b>. Увеличение размерности пространства позволяет
+                решить проблему Минского (исключающее ИЛИ).
+                То, что нельзя разделить в плоскости прямой линией, можно разделить гиперплоскостью в пространстве более
+                высокой размерности.
+                <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                    <img src="../../../img/lection15/theme15_pict6.png" width="50%">
+                    <div width="50%" margin-bottom="auto" margin-top="auto"> <span>Введение дополнительной переменной z
+                            позволило отделить плоскостью (линейной формой) сиреневые точки от синих</span></div>
+                </div>
+            </li>
+            <li>
+                Введение <b style="color: red;">дополнительного класса</b>. Слишком объёмный класс разбивают на подклассы. Увеличение количества
+                подпространств, дробление гипертел позволяет упростить
+                задачу построения модели за счет линеаризации описываемых областей. Например, класс «Аисты» можно разбить на
+                два класса «Черные аисты» и «Белые аисты».
+                Границы классов при этом могут стать линейными.
+                <div style="text-align: center; color: blue;"><img id="" src="../../../img/lection15/theme15_table17.png" style="width: 90%; height:90%;"></div>
+            </li>
+
+            <li>Введение <b style="color: red;">дополнительной связи</b>. Линейную систему переводят в нелинейную, дополняя её уравнение
+                нелинейными членами. Это позволяет некоторые экзотические примеры
+                вблизи раздела областей обойти плавными непрямыми линиями. Приём соответствует введению связей между
+                признаками. Например, так: Y = … + x3 + x4 + x3*x4 + x5 + … .
+                <div style="text-align: center; color: blue;"><img id="" src="../../../img/lection15/theme15_table18.png" style="width: 90%; height:90%;"></div>
+            </li>
+        </ul>
+
+        <details>
+            <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+            <ul class="tasks_list">
+                <hr>
+                <li><i>Придумайте свою задачу для экспертной системы. Например «симптомы - болезни», «ситуация - действие»,
+                        «ингредиенты - блюда».
+                        Предъявляя системе примеры, настройте ее. Проверьте правильность работы системы на примерах.
+                        Сделайте прогноз. Выпишите модель системы и нарисуйте
+                        ее геометрический образ. Исследуйте емкость ЭС, уменьшая количество признаков, увеличивая количество
+                        классов. При каком расположении примеров система
+                        обучается дольше?</i></li>
+                <li><i>Загрузите упражнение с сайта. Задайте свои примеры в виде исходного файла. Система автоматически
+                        рассчитает модель. Понаблюдайте как располагаются и
+                        вращаются разделяющие плоскости в процессе обучения. Меняя ракурс на гиперпространство, рассмотрите
+                        расположение гиперплоскостей, относительно заданных
+                        примеров.</i></li>
+                <hr>
+            </ul>
+        </details>
+   </div>
+</div>
+
+<h1>Видео:</h1>
+<video width="640" height="360" controls><source src="../../../img/lection15/151.mp4" type="video/mp4" ></video><br>
+<video width="640" height="360" controls><source src="../../../img/lection15/152.mp4" type="video/mp4" ></video><br>
+<script>
+        // чтобы два видео не проигрывались вместе
+        const videos = Array.from(document.querySelectorAll('video'));
+        let playing = true;
+        videos.forEach(video => {
+        video.addEventListener('play', function() {
+            if (playing) {
+                    videos.forEach(el => {
+                    el.pause();
+
+                });
+            }   
+        if (this.paused) {
+            playing = false;
+            this.play();
+
+        } 
+        else {playing = true;}
+        });
+    });
+
+    //чтобы видео останавливалось при закрытии окна
+    function stop_video(){
+        videos.find(video=>video.paused===false).pause();
+    };
+</script>
+
+    
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection14.html" title="Лекция&nbsp;14. Метод искусственного интеллекта #4. Машина из бусинок" class="small-link">Лекция&nbsp;14. Метод искусственного интеллекта #4. Машина из бусинок</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection16.html" title="Лекция&nbsp;16. Интерфейсы искусственного интеллекта. Моделирование пространственных систем" class="small-link">Лекция&nbsp;16. Интерфейсы искусственного интеллекта. Моделирование пространственных систем</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection12.html" title="Лекция 12. Метод искусственного интеллекта #2. Автопрограммирование" class="black-link">Л 12</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection13.html" title="Лекция 13. Метод искусственного интеллекта #3. Оценочная функция" class="black-link">Л 13</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection14.html" title="Лекция 14. Метод искусственного интеллекта #4. Машина из бусинок" class="black-link">Л 14</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 15</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection16.html" title="Лекция 16. Интерфейсы искусственного интеллекта. Моделирование пространственных систем" class="black-link">Л 16</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection17.html" title="Лекция 17. Интерфейсы искусственного интеллекта. Моделирование поведения систем во времени" class="black-link">Л 17</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection18.html" title="Лекция 18. Интерфейсы искусственного интеллекта. Модель текста" class="black-link">Л 18</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>

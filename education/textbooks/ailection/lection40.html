@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 40. Нейроны. Построение нейронной сети вручную</TITLE>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center"
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../.../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../.../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection37.html" title="Лекция 37. Однородные системы" class="black-link">Л 37</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection38.html" title="Лекция 38. Нейроны. Что это такое? Первое знакомство" class="black-link">Л 38</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection39.html" title="Лекция 39. Исследование свойств нейрона и проектирование нейронной сети" class="black-link">Л 39</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 40</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection41.html" title="Лекция 41. Подсистемы живого организма - полезные нейросети. Статические сети" class="black-link">Л 41</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection42.html" title="Лекция 42. Динамические нейросети. Сети с памятью" class="black-link">Л 42</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection43.html" title="Лекция 43. Автоматическое самообучение нейронной сети" class="black-link">Л 43</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table
+><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1 style="color: blue;">Лекция 40.<br>Построение нейронной сети вручную</h1>
+</div>
+
+<!--Основной текст-->
+<div>
+    <p>Спроектируем нейронную сеть, которая имитирует поведение собаки. </p>
+    <p>Если хозяина нет на кухне, то собака ест мясо как со стола, так и из миски. Если хозяин находится на кухне, то собака не ест мясо со стола, но ест из миски. Если мяса нет, то собака мясо не ест. (Если отдельный сюжет в задаче не оговорен, то принимается любой логичный).</p>
+    <p>На рисунках показаны два варианта решения задачи в одной из нотаций схем – нейросеть, реагирующая на мясо, миску, стол и хозяина.</p>
+    <figure style="text-align: center;">
+        <img src="../../../img/lection40/theme40_pict1.png" style="width: 60%;">
+        <figcaption style="text-align: center; color: blue;">Нейросеть «Собака»: <br>Ест=<i>one(2*Мясо-Хозяин+Миска-2)</i>, вариант 1</figcaption>
+        <br>
+        <div style="display: flex;">
+            <img src="../../../img/lection40/theme40_pict2.png " style="width: 30%;">
+            <img src="../../../img/lection40/theme40_pict3.png " style="width: 30%;">
+            <img src="../../../img/lection40/theme40_pict4.png " style="width: 30%;">
+        </div>
+        <figcaption style="text-align: left;">Примеры реакции модели нейронной сети «Собака» в трёх сюжетах начальных условий задачи: мясо, миска, хозяин с использованием среды моделирования Stratum, вариант 2</figcaption><br>
+        <figcaption style="text-align: left;">Пороги на схеме указаны в кружках нейронов. Красными линиями обозначены возбуждающие связи, синими - тормозящие. Когда нейрон возбуждён и его выход Y=1, то нейрон на схеме становится красным. Когда нейрон спокоен и его выход Y=0, то нейрон на схеме становится синим. Наличие входного сигнала на рецепторе (эффекторе) обозначено 
+            зелёным цветом. </figcaption>
+    </figure>
+    <p>Приведём общую таблицу реакций сети «Собака».</p>
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <tr style="background-color: #a99df2;">
+            <th colspan="3">Рецепторы</th>
+            <th colspan="3">Эффекторы</th>
+        </tr>
+        <tr style="background-color:#FFFACD">
+            <th>Мясо в миске</th>
+            <th>Мясо на столе</th>
+            <th>Хозяин на кухне</th>
+            <th>Ест из миски</th>
+            <th>Ест со стола</th>
+            <th>Мясо не ест</th>
+        </tr>
+
+        <tr style="background-color:#E0FFFF">
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+
+        <tr style="background-color:#E0FFFF">
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+
+        <tr style="background-color:#E0FFFF">
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+
+        <tr style="background-color:#E0FFFF">
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+
+        <tr style="background-color:#E0FFFF">
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+
+        <tr style="background-color:#E0FFFF">
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+
+        <tr style="background-color:#E0FFFF">
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+
+        <tr style="background-color:#E0FFFF">
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+    </table>
+
+    <p><i>Примечание</i>: любую нейронную сеть, выполняющую заданную функцию, можно собрать <i><b style="color: red;">бесконечным</b></i> числом вариантов. </p>
+
+    <details>  
+        <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+        <ul class="tasks_list">
+            <hr>
+            <li><i>Постройте нейронную сеть. Если есть встречный поток воздуха и ноги касаются земли, то таракан включает микропрограмму «бег». Если есть встречный поток воздуха и ноги не касаются земли, то таракан расправляет крылья и планирует. Если нет встречного потока воздуха, то таракан находится в покое.</i></li>
+            <li><i>Если есть солнце и температура более 36 градусов, то бабочка-крапивница складывает крылья, спасаясь от ожога. Если есть солнце и температура T&lt;=36 град., то бабочка раскрывает крылья (греется). Если солнца нет, то крылья сложены (ловить нечего, и тепло не стоит расходовать). Нарисуйте сеть. Обозначьте рецепторы. Подпишите пороги и весовые коэффициенты связей. Структурируйте схему сети по слоям. </i></li>
+            <li><i>Нарисуйте графическую иллюстрацию в осях координат «рецепторы». Подпишите на графике точки, прямые линии, области. Напишите математическую модель нейронной сети. Приведите таблицу истинности для всех случаев внешних воздействий на нейросеть. </i></li>
+            <li><i>Загрузите модель «Бабочка» с сайта. Постройте по реакциям модели таблицу истинности и формулу нейронной сети. Проверьте работу нейросети по реакциям модели упражнения с сайта.Выведите математическую модель нейронной сети для второго и третьего варианта нейронной сети «Собака».<br>
+            <strong><i>ВАЖНО!</i></strong> Вариантов решения одной и той же задачи множество. Такова природа биологических объектов – каждый организм строит свою сеть. 
+            Решения отличаются друг от друга разнообразием реакций, надёжностью работы схемы по отношению к ошибочному срабатыванию рецепторов, устойчивостью работы сети при 
+            случайном обрыве связей.</i></li>
+            <li><i>Что произойдёт, если у бабочки не будет работать один из рецепторов (ошибка 1-го рода)?</i></li>
+            <li><i>Что произойдёт, если у бабочки один (неизвестно какой) из рецепторов начнёт «глючить», то есть вместо 0 выдавать 1 и наоборот (ошибка 2-го рода)?</i></li>
+            <li><i>Скорректируйте нейронную схему «Бабочка», предусмотрев правильные её реакции на ошибки 1-го и 2-го рода, обеспечив надёжность работы организма.</i></li>
+            <hr>
+        </ul>
+    </details>
+</div>
+<br><br><br>
+		<h1 style="color: blue;">Презентация:</h1><embed src="../../../docs/presentation4.pdf" type="application/pdf" width="100%" height="700px" display="block">
+<br><br><br>
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection39.html" title="Лекция&nbsp;39. Исследование свойств нейрона и проектирование нейронной сети" class="small-link">Лекция&nbsp;39. Исследование свойств нейрона и проектирование нейронной сети</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection41.html" title="Лекция&nbsp;41. Подсистемы живого организма - полезные нейросети. Статические сети" class="small-link">Лекция&nbsp;41. Подсистемы живого организма - полезные нейросети. Статические сети</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection37.html" title="Лекция 37. Однородные системы" class="black-link">Л 37</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection38.html" title="Лекция 38. Нейроны. Что это такое? Первое знакомство" class="black-link">Л 38</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection39.html" title="Лекция 39. Исследование свойств нейрона и проектирование нейронной сети" class="black-link">Л 39</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 40</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection41.html" title="Лекция 41. Подсистемы живого организма - полезные нейросети. Статические сети" class="black-link">Л 41</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection42.html" title="Лекция 42. Динамические нейросети. Сети с памятью" class="black-link">Л 42</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection43.html" title="Лекция 43. Автоматическое самообучение нейронной сети" class="black-link">Л 43</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>

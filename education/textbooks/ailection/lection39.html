@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 39. Исследование свойств нейрона и проектирование нейронной сети</TITLE>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center"
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../.../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../.../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection36.html" title="Лекция 36. Перспективы развития цивилизации. Обобщение" class="black-link">Л 36</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection37.html" title="Лекция 37. Однородные системы" class="black-link">Л 37</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection38.html" title="Лекция 38. Нейроны. Что это такое? Первое знакомство" class="black-link">Л 38</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 39</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection40.html" title="Лекция 40. Нейроны. Построение нейронной сети вручную" class="black-link">Л 40</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection41.html" title="Лекция 41. Подсистемы живого организма - полезные нейросети. Статические сети" class="black-link">Л 41</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection42.html" title="Лекция 42. Динамические нейросети. Сети с памятью" class="black-link">Л 42</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table
+><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1 style="color: blue;">Лекция 39.<br>Исследование свойств нейрона и проектирование нейронной сети</h1>
+</div>
+
+<!--Основной текст-->
+<div>
+    <p>Исследуем свойства конкретного нейрона, изображённого на рисунке. </p>
+    <figure style="text-align: center; color: blue;">
+        <div style="display: flex; justify-content: space-evenly;">
+            <img src="../../../img/lection39/theme39_pict1.png" >
+            <img src="../../../img/lection39/theme38_pict4.png" >
+        </div>
+        <figcaption style="font-size: 20px; text-align: center;">Схема нейрона и график его единичной активационной функции</figcaption>
+    </figure>
+    <p>Модель нейрона: <i>Y=one(-1*x1+2*x2-h)</i>. При пороге <i><b style="color: red;">h = -1</b></i> просчитаем реакцию нейрона <i>Y</i> на все возможные варианты входных сигналов <i>X1</i> и <i>X2</i>.</p>
+    
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <caption style="text-align: right; color: blue;">Реакции нейрона при <i><b style="color: red;"></b></i>h &gt; = -1</caption>
+        <tr style="background-color:#a99df2">
+            <th>X1</th>
+            <th>X2</th>
+            <th>Y</th>
+        </tr>
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+    </table>
+
+    <p>Например, рассчитаем выходной сигнал и состояние нейрона <i>Y</i> при входных сигналах <i>X1=1, X2=1</i> имеем: <i>S-h=(-1)*1+2*1-(-1)=2, Y=one(S-h)=one(2)=1</i>. 
+        Нейрон возбуждён.</p>
+
+    <p>При входных сигналах <i>X1=0, X2=1</i> имеем: <i>S-h=(-1)*0+2*1-(-1)=1, Y=one(S-h)= one(3)=1</i>. </p>
+    <p>При входных сигналах <i>X1=1, X2=0</i> имеем: <i>S-h=(-1)*1+2*0-(-1)=0, Y=one(S-h)=one(0)=1</i>. (Единичная функция возвращает при нулевом аргументе единицу).</p>
+    <p>При входных сигналах <i>X1=0, X2=0</i> имеем: <i>S-h=(-1)*0+2*0-(-1)=1, Y=one(S-h) =one(1)=1</i>. </p>
+    <p>Видно, что порог <i>h</i> здесь настолько низок, что пропускает все комбинации сигналов, проходящие через нейрон. Логическая функция нейрона, которую он реализует 
+        при <i>h=-1: <b style="color: red;">Y=1</b></i> (нейрон всегда возбужден, независимо от входных сигналов), такой нейрон может служить в нейросетях генератором сигналов. В этом случае его называют 
+        спонтанно активным нейроном.</p>
+    <p>Просчитаем реакции нейрона при <b style="color: red;">различных значениях </b>величины порога нейрона h. </p>
+
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <caption style="text-align: right; color: blue;">Реакции нейрона при h=0</caption>
+        <tr style="background-color:#a99df2">
+            <th>X1</th>
+            <th>X2</th>
+            <th>Y</th>
+        </tr>
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+    </table>
+
+    <p>Логическая функция нейрона при <i>h=0: <b style="color: red;">Y=НЕ (x1) ИЛИ x2</b>.</i> Заметим, что логическая функция изменилась, реализуется операция <i><b style="color: red;">ИЛИ</b></i>.</p>
+
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <caption style="text-align: right; color: blue;">Реакции нейрона при h=1</caption>
+        <tr style="background-color:#a99df2">
+            <th>X1</th>
+            <th>X2</th>
+            <th>Y</th>
+        </tr>
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+    </table>
+    <p>Логическая функция нейрона при <i>h=1: <b style="color: red;">Y= x2</b>.</i> Заметим, выход <i>Y</i> повторяет один из входов <i>Х2</i>.</p>
+
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <caption style="text-align: right; color: blue;">Реакции нейрона при h=2</caption>
+        <tr style="background-color:#a99df2">
+            <th>X1</th>
+            <th>X2</th>
+            <th>Y</th>
+        </tr>
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">1</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+    </table>
+
+    <p>Логическая функция нейрона при <i>h=2: <b style="color: red;">Y= НЕ (x1) И x2</b></i>. Заметим, что функция нейрона сменилась на логику <b style="color: red;"><i>И</i></b>.</p>
+
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <caption style="text-align: right; color: blue;">Реакции нейрона при h=3</caption>
+        <tr style="background-color:#a99df2">
+            <th>X1</th>
+            <th>X2</th>
+            <th>Y</th>
+        </tr>
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">0</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#E0FFFF">1</td>
+            <td style="background-color:#FFFACD">0</td>
+        </tr>
+    </table>
+    <p>Логическая функция нейрона при <i>h=3: <b style="color: red;">Y= 0</b></i>. Заметим, что в данном случае выход <i>Y</i> тождественно равен нулю. Нейрон закрыт всегда и никакие комбинации сигналов 
+        через себя не пропускает.</p>
+
+    <p>Анализируя таблицы, можно увидеть, что с увеличением значения величины порога <i><h/i> в столбце <i>Y</i> появляется все больше нулей, нейрон все больше прикрывается, его логика становится жёстче. 
+        Обобщим примеры. </p>
+    
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <caption style="text-align: right; color: blue;">Логические функции нейрона при различных h</caption>
+
+        <tr style="background-color:#a99df2; font-style: italic;">
+            <th>Порог h</th>
+            <th>Функция Y=one(S-h)</th>
+            <th>Комментарий</th>
+        </tr>
+
+        <tr style="background-color:#E0FFFF;">
+            <td>&lt;= -1</td>
+            <td>Y= 1</td>
+            <td>Нейрон возбуждён всегда, генератор сигналов</td>
+        </tr>
+        <tr style="background-color:#E0FFFF;">
+            <td>0</td>
+            <td>Y=НЕ (x1) <b style="color: red;">ИЛИ</b> x2</td>
+            <td>Функция «ИЛИ»</td>
+        </tr>
+        <tr style="background-color:#E0FFFF;">
+            <td>1</td>
+            <td>Y= x2</td>
+            <td>Нейтральная функция «повторитель»</td>
+        </tr>
+        <tr style="background-color:#E0FFFF;">
+            <td>2</td>
+            <td>Y= НЕ (x1) <b style="color: red;">И</b> x2</td>
+            <td>Функция «И»</td>
+        </tr>
+        <tr style="background-color:#E0FFFF;">
+            <td>&gt;=3</td>
+            <td>Y= 0</td>
+            <td>Нейрон всегда заперт, тупик, ловушка для сигналов</td>
+        </tr>
+    </table>
+    <p><i><b style="color: red;">Вывод</b></i>. В зависимости от уровня порога <i>h</i> <b style="color: red;">нейрон может менять логику работы</b>: от мягкой до жёсткой, от <i><b style="color: red;">ИЛИ</b></i> до <i><b style="color: red;">И</b></i>, от 
+        «открыто всегда» до «закрыто всегда». </p>
+    <p>В процессе работы (познания окружающего нас мира) мозг меняет значения порогов нейронов, управляет весами связей, меняет свою логику, то есть правила работы, реакции на мир. 
+        <b style="color: red;">Мозг, меняя правила, обучается</b>, находит способ правильно реагировать на окружающую среду. <b style="color: red;">Мозг строит модель</b>. Модель «находится» в связях нейронов <i>k </i> и 
+        имеет вид уравнений-неравенств. <b style="color: red;">Логика – это связи</b>. Знания – это связи. В биологическом смысле, это означает, что во время обучения у нас вырастают или отмирают, 
+        усиливаются или ослабляются аксоны – связи между нейронами, сеть перестраивается. Уравнения задают границы областей, неравенства задают области в многомерном пространстве 
+        рецепторов, то есть переменных <i>X</i>. </p>
+    <p>Как всегда, создадим конструктор из элементов, помогающий нам строить сложные системы. Это три типовых нейрона, каждый из которых реализует логическую схему. 
+        Первый <b style="color: red;"><i>- И</i></b>, второй <b style="color: red;"><i>- ИЛИ</i></b>, третий <b style="color: red;"><i>- НЕ</i></b>. А как известно из комбинации этих функций можно собрать любую логическую статическую 
+        сложную функцию.</p>
+    
+    <ul style="color:black; list-style: disc;">
+        <li>Нейрон с функцией «<b style="color: red;">И</b>»: <i>С=A&B, C = (A+B-2>=0) = one(A+B-2)</i></li>
+        <li>Нейрон с функцией «<b style="color: red;">ИЛИ</b>»: <i>C=A|B, C = (A+B-1>=0) = one(A+B-1)</i></li>
+        <li>Нейрон с функцией «<b style="color: red;">НЕ</b>»: <i>C=?A, C = (1-2A>=0) = one(-2A+1)</i></li>
+        <div style="text-align: center;"><img src="../../../img/lection39/theme39_pict2.png" style="width: 80%;"></div>
+        <li>Любую логическую функцию можно представить комбинацией функций <b style="color: red;"><i>И-ИЛИ-НЕ</i></b>, соединённых последовательно или/и параллельно.</li>
+        <li>Любая логическая функция может быть представлена алгебраическим неравенством (равенством), иногда достаточно сложным.</li>
+        <li>Любая алгебраическая система равенств (неравенств) может быть изображена геометрически как некоторое тело в пространстве переменных (рецепторов).</li>
+        <li>Любая база статических данных может быть представлена логической функцией в пространстве атрибутов-рецепторов {<i>0,1</i>}.</li>
+        <li>Любая база статических данных может быть представлена как в виде нейронной сети, так и в виде математической модели или геометрического образа</li>
+    </ul>
+    <p>Например, для нейрона с двумя входами <i>А</i> и <i>В</i> с весами <i>kA=2</i> и <i>kB=-1</i> и порогом <i>h=2</i> логическая функция и математическая модель нейрона будет: 
+        <i><b style="color: red;">C=A&НЕ(B) = (2*A-B-2>=0) = one(2*A-B-2)</b></i>.</p>
+    
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <caption style="text-align: right; color: blue;">Таблица связей нейронной сети</caption>
+        <tr style="background-color:#a99df2; font-weight: bold; font-style: italic;">
+            <th></th>
+            <th>A</th>
+            <th>B</th>
+            <th>C</th>
+        </tr>
+        <tr>
+            <td style="background-color:#a99df2; font-weight: bold; font-style: italic;">A</td>
+            <td style="background-color:#E0FFFF;">0</td>
+            <td style="background-color:#E0FFFF;">0</td>
+            <td style="background-color:#E0FFFF;">2</td>
+        </tr>
+        <tr>
+            <td style="background-color:#a99df2; font-weight: bold; font-style: italic;">B</td>
+            <td style="background-color:#E0FFFF;">0</td>
+            <td style="background-color:#E0FFFF;">0</td>
+            <td style="background-color:#E0FFFF;">-1</td>
+        </tr>
+        <tr>
+            <td style="background-color:#a99df2; font-weight: bold; font-style: italic;">C</td>
+            <td style="background-color:#E0FFFF;">0</td>
+            <td style="background-color:#E0FFFF;">0</td>
+            <td style="background-color:#E0FFFF;">0</td>
+        </tr>  
+        <tr>
+            <td style="background-color:#a99df2; font-weight: bold; font-style: italic;">h</td>
+            <td style="background-color:#E0FFFF;">0</td>
+            <td style="background-color:#E0FFFF;">0</td>
+            <td style="background-color:#E0FFFF;">-2</td>
+        </tr>           
+    </table>
+
+    <figure style="text-align: center; color: blue;">
+        <img src="../../../img/lection39/theme39_pict3.png" style="width: 50%;">
+        <figcaption style="font-size: 20px; text-align: center;">Обозначение на инженерных схемах и математическая модель</figcaption>
+    </figure>
+
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <caption style="text-align: right; color: blue;">Таблица истинности (трассировочная таблица)</caption>
+        <tr style="background-color:#a99df2">
+            <th>A</th>
+            <th>B</th>
+            <th>С=A&НЕ(B)</th>
+            <th>С=(2А-В>=2)</th>
+        </tr>
+        <tr style="background-color:#E0FFFF;">
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr style="background-color:#E0FFFF;">
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr style="background-color:#E0FFFF; color:red; font:bolder">
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr style="background-color:#E0FFFF;">
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+    </table>
+
+    <figure style="text-align: center; color: blue;">
+        <img src="../../../img/lection39/theme39_pict4.png" style="width: 50%;">
+        <figcaption style="font-size: 20px; text-align: center;">Обозначение на инженерных схемах и математическая модель</figcaption>
+    </figure>
+    <p><i><b style="color: red;">Геометрическая иллюстрация:</b></i></p>
+    <ul style="color:black; list-style: disc; font-style: italic;">
+        <li>оси координат – рецепторы А и В, </li>
+        <li>шкала осей координат - значения рецепторов 0 и 1,</li>
+        <li>уравнение нейрона в виде разделяющего правила - прямой линии 2А-В=2, </li>
+        <li>две полуплоскости С=1 (нейрон возбуждён, правило выполнено, 2А-В &gt;=2) и С=0 (нейрон спит, правило не выполнено, 2А-В &lt;2),</li>
+        <li>каждая точка плоскости АОВ с координатами (А, В) соответствует строке таблицы истинности (нейрон спит С=0, нейрон возбуждён С=1),</li>
+        <li>один нейрон – одна прямая линия, делящая пространство рецепторов на две области (две полуплоскости).</li>
+    </ul>
+
+
+    <details>  
+        <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+        <ul class="tasks_list">
+            <hr>
+            <li><i>Загрузите с сайта упражнения «Единичная функция Хэвисайда» и «Логика нейрона». В процессе эксперимента с моделью нейрона постройте его таблицу истинности и математическую модель. Логика нейрона генерируется в упражнении многократно случайным образом кнопкой «Снова».</i></li>
+            <hr>
+        </ul>
+    </details>
+</div>
+<br><br><br>
+		<h1 style="color: blue;">Презентация:</h1><embed src="../../../docs/presentation4.pdf" type="application/pdf" width="100%" height="700px" display="block">
+<br><br><br>
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection38.html" title="Лекция&nbsp;38. Нейроны. Что это такое? Первое знакомство" class="small-link">Лекция&nbsp;38. Нейроны. Что это такое? Первое знакомство</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection40.html" title="Лекция&nbsp;40. Нейроны. Построение нейронной сети вручную" class="small-link">Лекция&nbsp;40. Нейроны. Построение нейронной сети вручную</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection36.html" title="Лекция 36. Перспективы развития цивилизации. Обобщение" class="black-link">Л 36</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection37.html" title="Лекция 37. Однородные системы" class="black-link">Л 37</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection38.html" title="Лекция 38. Нейроны. Что это такое? Первое знакомство" class="black-link">Л 38</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 39</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection40.html" title="Лекция 40. Нейроны. Построение нейронной сети вручную" class="black-link">Л 40</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection41.html" title="Лекция 41. Подсистемы живого организма - полезные нейросети. Статические сети" class="black-link">Л 41</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection42.html" title="Лекция 42. Динамические нейросети. Сети с памятью" class="black-link">Л 42</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>

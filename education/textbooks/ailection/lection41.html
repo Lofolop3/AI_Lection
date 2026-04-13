@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 41. Подсистемы живого организма - полезные нейросети. Статические сети</TITLE>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center"
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../.../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../.../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection38.html" title="Лекция 38. Нейроны. Что это такое? Первое знакомство" class="black-link">Л 38</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection39.html" title="Лекция 39. Исследование свойств нейрона и проектирование нейронной сети" class="black-link">Л 39</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection40.html" title="Лекция 40. Нейроны. Построение нейронной сети вручную" class="black-link">Л 40</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 41</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection42.html" title="Лекция 42. Динамические нейросети. Сети с памятью" class="black-link">Л 42</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection43.html" title="Лекция 43. Автоматическое самообучение нейронной сети" class="black-link">Л 43</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection44.html" title="Лекция 44. На что способны нейронные сети" class="black-link">Л 44</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table
+><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1 style="color: blue;">Лекция 41.<br>Подсистемы живого организма - полезные нейросети. Статические сети</h1>
+</div>
+
+<!--Основной текст-->
+<div>
+    <div class="text_content" id="section41.1">
+        <h1 style="color: blue;">Сравниватель на линейчатых нейронах</h3>
+        <p>На вход нейросети подается два числа <i>X1</i> и <i>X2</i>. На выходе сети находится три нейрона. Построим нейросеть, которая реагирует одним нейроном, если <i>X1&gt;X2</i>, или другим, 
+            если <i>X1&lt;X2</i>. Если <i>X1=X2</i>, то срабатывает третий нейрон на выходе. Значение входного сигнала соответствует силе его воздействия на организм. Будем использовать 
+            линейчатые нейроны с активационной функцией <i>ReLu (Rectified Linear Unit): Y=max(0,S-h), S=k1*X1+k2*X2</i>. </p>
+        <figure style="text-align: center;">
+            <div style="display: flex;">
+            <div>
+                <figcaption style="color: blue; text-align: center;">График активационной функции <i>ReLU: Y=max(0,S-h)</i></figcaption>
+                <img src="../../../img/lection41/theme41_pict1.png" style="width: 60%;">
+            </div>
+            <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+                <caption style="text-align: right; color: blue;">Пример формального задания поведения нейросети </caption>
+                <tr style="background-color: #a99df2;">
+                    <th colspan="2">Рецепторы</th>
+                    <th colspan="3">Эффекторы</th>
+                </tr>
+                <tr style="background-color: #E0FFFF;">
+                    <th>X1</th>
+                    <th>X2</th>
+                    <th>Y1</th>
+                    <th>Y2</th>
+                    <th>Y3</th>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#FFFACD">2</td>
+                    <td style="background-color:#FFFACD">2</td>
+                    <td style="background-color: #E0FFFF;">0</td>
+                    <td style="background-color: #E0FFFF;">0</td>
+                    <td style="background-color: #E0FFFF;">1</td>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#FFFACD">2</td>
+                    <td style="background-color:#FFFACD">5</td>
+                    <td style="background-color: #E0FFFF;">0</td>
+                    <td style="background-color: #E0FFFF;">1</td>
+                    <td style="background-color: #E0FFFF;">0</td>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#FFFACD">5</td>
+                    <td style="background-color:#FFFACD">2</td>
+                    <td style="background-color: #E0FFFF;">1</td>
+                    <td style="background-color: #E0FFFF;">0</td>
+                    <td style="background-color: #E0FFFF;">0</td>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#FFFACD">5</td>
+                    <td style="background-color:#FFFACD">5</td>
+                    <td style="background-color: #E0FFFF;">0</td>
+                    <td style="background-color: #E0FFFF;">0</td>
+                    <td style="background-color: #E0FFFF;">1</td>
+                </tr>
+
+            </table>
+            </div>
+        </figure>
+  
+        <p>Человек имеет две ушные раковины, размещённые на определённом расстоянии друг от друга. Кости головы приглушают проходящий через них звук. Когда звук раздаётся слева от 
+            человека, то на левую перепонку давит бОльшее звуковое давление <i>P1</i>, чем на правую <i>P2</i>. Нейросеть, определит, что <i>Х1&gt;Х2</i>, и даст команду мышцам на 
+            разворот головы влево.</p>
+        <figure style="text-align: center;">
+            <div style="display: flex;">
+                <img src="../../../img/lection41/theme41_pict2.png" style="width: 30%;">
+                <img src="../../../img/lection41/theme41_pict3.png" style="width: 30%;">
+                <img src="../../../img/lection41/theme41_pict4.png" style="width: 30%;">
+            </div>
+            <figcaption style="color: blue; text-align: center;">Движение головы, как реакция на звук, и схемы управления поворотом головы при детекции звука</figcaption>
+        </figure>
+        <p>Особенностью функции <i>ReLu</i> является то, что если на сумматоре нейрон имеет сигнал величиной <i>S=5</i>, а порог равен <i>h=2</i>, то на выходе нейрона будет 
+            сигнал <i>S-h=5-2=3</i>.</p>
+        <div style="text-align: center;"><img src="../../../img/lection41/theme41_pict5.png" style="width: 35%;"></div>
+
+        <p>Построим нейросеть, которая из двух входных сигналов - чисел <i>X1</i> и <i>X2</i> - пропускает на выход <i>Y</i> максимальное из них: <i>Y=max(X1,X2)</i>.</p>
+        
+        <figure style="text-align: center;">
+            <div style="display: flex;">
+            <div>
+                <figcaption style="color: blue; text-align: center;">График активационной функции <i>ReLU: Y=max(0,S-h)</i></figcaption>
+                <img src="../../../img/lection41/theme41_pict6.png" style="width: 100%;">
+            </div>
+            <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+                <caption style="text-align: right; color: blue;">Формальное задание поведения нейросети на примере</caption>
+                <tr style="background-color: #a99df2;">
+                    <th colspan="2">Рецепторы</th>
+                    <th>Эффектор</th>
+                </tr>
+                <tr style="background-color: #E0FFFF;">
+                    <th>X1</th>
+                    <th>X2</th>
+                    <th>Y</th>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#FFFACD">3</td>
+                    <td style="background-color:#FFFACD">3</td>
+                    <td style="background-color: #E0FFFF;">3</td>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#FFFACD">3</td>
+                    <td style="background-color:#FFFACD">7</td>
+                    <td style="background-color: #E0FFFF;">7</td>
+                </tr>
+
+                <tr>
+                    <td style="background-color:#FFFACD">7</td>
+                    <td style="background-color:#FFFACD">3</td>
+                    <td style="background-color: #E0FFFF;">7</td>
+
+                </tr>
+
+                <tr>
+                    <td style="background-color:#FFFACD">7</td>
+                    <td style="background-color:#FFFACD">7</td>
+                    <td style="background-color: #E0FFFF;">7</td>
+
+                </tr>
+
+            </table>
+            </div>
+        </figure>
+
+        <p>До этого мы научились реализовывать любые логические функции, имея в арсенале элементы: И, ИЛИ, НЕ. То есть обеспечили аналог оператора присвоения и вычисления двоичных арифметических выражений в языках программирования.</p>
+        <p>Теперь в арсенале нейросхем появляется реализация, аналогичная условному оператору в программировании: <i><b style="color: red;">IF (X1>X2) THEN Y:=X1 ELSE Y:=X2</b></i>.</p>
+        <details>  
+            <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+            <ul class="tasks_list"><hr>
+                <li><i>Спроектируйте нейронную сеть, умеющую из двух чисел выбирать наименьшее. Объедините сети: Y1=max(X1,X2), Y2=min(X1,X2) в одну с двумя выходами.</i></li>
+                <li><i>Постройте сеть, реализующую функции Y=abs(X) и Y=sign(X). Используйте факт связи двух функций: ReLu(X)=(X+abs(X))/2.</i></li>
+            <hr></ul>
+        </details>
+
+        <p>Пример «Детектор цвета». Человек различает цвета. Примем для простоты <i>5</i> цветов: фиолетовый (длина волны — <i>400 нм</i>), зелёный (<i>500 нм</i>), 
+            жёлтый (<i>550 нм</i>), оранжевый (<i>600 нм</i>), красный (<i>700 нм</i>). Чтобы построить нейросеть, которая бы определяла цвет образца, демонстрируемого человеку, 
+            достаточно на входе иметь от рецепторов глаза два сигнала <i>X1</i>и <i>X2</i>. На рисунке показан график чувствительности глазных рецепторов. Рецепторы имеют различную 
+            чувствительность к разным цветам. Кроме того, два типа рецепторов образуют сдвиг кривой чувствительности друг относительно друга. Именно это даёт им возможность определить 
+            конкретный цвет по разнице <i>X1</i> и <i>X2</i>.</p>
+        <figure style="text-align: center;">
+            <img src="../../../img/lection41/theme41_pict7.png" style="width: 90%;">
+            <figure style="color: blue; text-align: center;">График чувствительности рецепторов Х1 и Х2 к длине волне света (цвету)</figure>
+        </figure>
+        <p>В области <i>400 нм X1&gt;X2</i>, в области <i>500 нм X1&gt;&gt;X2</i>, в области <i>550 нм X1=X2</i>, в области <i>600 нм X1&lt;&lt;X2</i>, в области 
+            <i>700 нм X1&lt;X2</i>. Вычисление знака, величины сигнала и величины разности двух сигналов <i>X1</i> и <i>X2</i> даёт возможность сети уверенно различать цвета.</p>
+        <details>  
+            <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+            <ul class="tasks_list"><hr>
+                <li><i>Соберите сеть, которая имеет на входе 2 рецептора: Х1 и Х2, а на выходе имеет 5 эффекторов (синий, зелёный, жёлтый, оранжевый, красный). Преобразуйте комбинацию сигналов Х1 и Х2 в цветовые ощущения. </i></li>
+                <li><i>Добавьте в схему сети условие «мелкий и движущийся предмет». Например, известно, что лягушка хватает и проглатывает тёмные, цветные, мелкие движущиеся предметы. Для реализации достаточно создать поле рецепторов глаза.
+                    <img src="../../../img/lection41/theme41_pict8.png" style="width: 40%;"></i></li>
+                <li><i>Черепаха Уолтера. В истории известна реализация кибернетического устройства, собранная из 3 колес, платформы, аккумулятора, фотоэлемента, лампы и бампера с упругим контактом, которое осуществляло: движение на свет (приближалась к слабоосвещённым предметам и удалялась от сильно освещённых), поисковые движения, исследуя пространство вокруг себя, обход препятствий, движение к подзарядке по мере истощения заряда аккумулятора, узнавание себя в зеркале по отражению в нем собственной лампы. Соберите схему нейронной сети.</i></li>
+            <hr></ul>
+        </details>
+
+    </div>
+
+    <div class="text_content" id="section41.2">
+        <h1 style="color: blue;">Латеральная сеть (обратная задача)</h3>
+        <p>В области лба у человека обнаружены нейросети в виде очень длинных регулярных структур. Определите их предназначение (синим обозначены тормозные связи, красным - возбуждающие) для интеллектуальной деятельности человека.</p>
+        <figure style="text-align: center;">
+            <img src="../../../img/lection41/theme41_pict9.png" style="width: 70%;">
+            <figcaption style="color: blue; text-align: center;">Латеральная сеть</figcaption>
+        </figure>
+        <details>  
+            <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+            <ul class="tasks_list"><hr>
+                <li><i>Нарисуйте в тетради латеральную сеть, нарисуйте типичный входной и выходной сигналы на рецепторах и эффекторах, сделайте и запишите в тетради вывод: «что делает данная нейронная сеть и для чего она нужна живым организмам».</i></li>
+            <hr></ul>
+        </details>
+        <p>Статические (регулярные) сети – это сети, которые на один и тот же набор входных сигналов реагируют каждый раз одинаковым результатом на выходе. Однако, чтобы научиться чему-либо, требуется перестройка структуры сети. </p>
+        <p>В разное время (до и после обучения) сеть должна реагировать по-разному. Такие сети называются динамическими. Для этого в составе динамической сети должна быть одна или несколько ячеек памяти. Добиться этого можно только петлями обратной связи в составе нейронной схемы.</p>
+    </div>
+</div>
+<br><br><br>
+		<h1 style="color: blue;">Презентация:</h1><embed src="../../../docs/presentation4.pdf" type="application/pdf" width="100%" height="700px" display="block">
+<br><br><br>
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection40.html" title="Лекция&nbsp;40. Нейроны. Построение нейронной сети вручную" class="small-link">Лекция&nbsp;40. Нейроны. Построение нейронной сети вручную</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection42.html" title="Лекция&nbsp;42. Динамические нейросети. Сети с памятью" class="small-link">Лекция&nbsp;42. Динамические нейросети. Сети с памятью</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection38.html" title="Лекция 38. Нейроны. Что это такое? Первое знакомство" class="black-link">Л 38</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection39.html" title="Лекция 39. Исследование свойств нейрона и проектирование нейронной сети" class="black-link">Л 39</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection40.html" title="Лекция 40. Нейроны. Построение нейронной сети вручную" class="black-link">Л 40</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 41</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection42.html" title="Лекция 42. Динамические нейросети. Сети с памятью" class="black-link">Л 42</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection43.html" title="Лекция 43. Автоматическое самообучение нейронной сети" class="black-link">Л 43</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection44.html" title="Лекция 44. На что способны нейронные сети" class="black-link">Л 44</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>

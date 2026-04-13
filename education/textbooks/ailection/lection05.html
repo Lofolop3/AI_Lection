@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 05. Выведение законов. Построение уравнения линейной регрессии – метод ИИ #1</TITLE>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center"
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection02.html" title="Лекция 02. Компьютерная графика и геометрия, изображая и измеряя многомерное пространство" class="black-link">Л 02</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection03.html" title="Лекция 03. Как найти в n-мерном пространстве расстояние между двумя точками? Как найти угол?" class="black-link">Л 03</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection04.html" title="Лекция 04. Понятия дисциплины Искусственный интеллект. Гуманитарный аспект" class="black-link">Л 04</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 05</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection06.html" title="Лекция 06. Основные формы представления знаний в ИИ. Знания – модель – система -> прогноз" class="black-link">Л 06</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection07.html" title="Лекция 07. Линии организации материи - неживая, живая, сознательная, разумная" class="black-link">Л 07</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection08.html" title="Лекция 08. Модель человека - запас, поток, оценка" class="black-link">Л 08</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table
+><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1>Лекция 05. <br>Выведение законов. Построение уравнения линейной регрессии – метод ИИ #1</h1>
+</div>
+
+
+<div class="content">
+    <div class="text_content" id="section5.1">
+        <p>Как уже было сказано интеллектуальная деятельность связана с умением на основании нескольких фактов выявить по ним общую закономерность. 
+            Ясно, что дерево растет точно в соответствии со множеством законов, завод работает, подчиняясь своим законам. Однако все эти законы скрыты от наших глаз. 
+            Наша задача их выявить, записать в явном виде. Тогда мы могли бы, используя записи законов, предсказать будущее поведение системы и даже управлять ею, 
+            направляя ее в нужном нам направлении.</p>
+
+            <p>Предположим, что мы поставили <i>10</i> экспериментов, чтобы определить, если ли связь между причиной <i>Х</i> и следствием <i>Y</i>. Их результаты можно отразить 
+                на графике, нарисовав в осях <i>X, Y 10</i> точек с координатами <i>(x<sub>i</sub>, y<sub>i</sub>)</i> каждая.
+                Рассматривая точки в совокупности, можно выдвинуть гипотезу о том, что их объединяет. Предположим, что в нашем примере имеет место линейная зависимость 
+                между <i>X</i> и <i>Y: Y = A<sub>1</sub> * X + A<sub>0</sub></i>. Такая гипотеза на графике выглядит как прямая линия с наклоном, который задается параметром <i>A<sub>1</sub></i>, и смещением, 
+                которое задается параметром <i>A<sub>0</sub></i>. (<a href="#ris-1">рис. 5.1.</a>)
+                <br><br>
+                <div style="text-align: center; color: blue;"><img id="ris-1" src="../../../img/lection5/lin_regress.png" style="height: 100%; width: 100%;"><br>Рисунок 5.1. - График гипотезы Y = A<sub>1</sub> * X + A<sub>0</sub></div>
+                <br><br>
+                Таких прямых с разными значениями параметров <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i> можно провести бесконечно много. Поэтому наша задача найти и провести одну единственную прямую 
+                линию, которая будет одновременно ближе всего сразу ко всем экспериментальным точкам. Это значит, что надо измерить расстояние 
+                R<sub>i</sub> = (y<i>i</i> – (A<sub>0</sub> + A<sub>1</sub> * x<sub>i</sub>))<sup>2</sup> от экспериментальной точки (x<sub>i</sub>, y<sub>i</sub>) до соответствующей ей точки на прямой 
+                с координатами (<i>x<sub>i</sub>, A<sub>0</sub> + A<sub>1</sub> * x<sub>i</sub></i>), сложить все эти расстояния 
+                <i>F = &#8721;R<sub>i</sub><sup>2</sup></i> и потребовать, чтобы сумма ошибок F была наименьшей: <i>F&#8594;min</i>. 
+                Уточним, жертвовать мы можем при этом значениями <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i>. То есть их значения мы можем менять произвольно по собственному желанию. 
+                Поэтому, запишем, что суммарная ошибка <i>F</i> зависит от <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i> и должна стремиться к минимуму: <i>F(A<sub>0</sub>, A<sub>1</sub>)&#8594;min</i>. 
+                Данное замечание говорит о том, что <i>F</i> является функцией от <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i> и нам требуется найти экстремум (минимум) этой функции.</p>
+
+                <p><b style="color: red;">Обратите внимание</b>, что все расстояния <i>R<sub>i</sub></i> между положениями <i>i</i>-той экспериментальной точки и соответствующей ей теоретической точки, 
+                    лежащей вертикально над или под ней по Y, перед сложением в сумму мы возвели в квадрат. Это сделано для того, чтобы при сложении положительных и отрицательных
+                        разностей <i>(yi - (A<sub>0</sub> + A<sub>1</sub> * xi))</i>, когда экспериментальные точки располагаются как выше, так и ниже теоретической прямой, их сумма <i>F</i> при наличии 
+                        расхождений положений точек не показала, что их якобы нет.Такой метод логично назвали <b style="color: red;">методом наименьших квадратов</b>. 
+                        Чем дальше значения <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i> от значений <i>A<sub>0</sub><sup>*</sup>, A<sub>1</sub><sup>*</sup></i> у наилучшей из возможных прямых 
+                        <i>y = A<sub>0</sub><sup>*</sup> + A<sub>1</sub><sup>*</sup> * x</i>, тем больше значение <i>F</i>. И только при наилучших значениях 
+                        <i>А0<sup>*</sup></i> и <i>A<sub>1</sub><sup>*</sup></i> функция <i>F</i> достигает минимума. А это значит, что в точке <i>(А0<sup>*</sup>,A<sub>1</sub><sup>*</sup>)</i> 
+                        производные <i>&#8706;F / &#8706;A<sub>0</sub> = 0</i> и <i>&#8706;F / &#8706;A<sub>1</sub> = 0</i> одновременно. Применим условие экстремума к функции <i>F</i>, составив два уравнения 
+                        с двумя неизвестными <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i>. При этом здесь надо иметь в виду, что беря производную по <i>A<sub>0</sub></i>, следует считать, что остальные переменные 
+                        <i>A<sub>1</sub>, х, y</i> - неизменны, константы. Беря производную по <i>A<sub>1</sub></i>, следует считать, что константами являются <i>A<sub>0</sub>, х, y</i>.  </p>
+                    
+                    <div style="color:blue; text-align: center;"><img src="../../../img/lection5/form1.png" style="height: 70%; width: 70%;"></div>
+                        
+                    <p>Беря производные по A<sub>0</sub> и по A<sub>1</sub> и приравнивая их выражения нулю, имеем:</p>
+                    <div style="color:blue; text-align: center;"><img src="../../../img/lection5/form2.png" style="height: 50%; width: 50%;"></div>
+
+                        <p>Упрощая, имеем:</p>
+                        <div style="color:blue; text-align: center;"><img src="../../../img/lection5/form3.png" style="height: 50%; width: 50%;"></div>
+
+
+                        
+                        <p>Решая совместно два уравнения относительно неизвестных <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i>, имеем:</p>
+                        <div style="color:blue; text-align: center;"><img src="../../../img/lection5/form4.png" style="height: 70%; width: 70%;"></div>
+
+
+                        <p>При определенной настойчивости этот же результат можно получить по-другому, по-школьному. Функция:</p>
+                        <div style="color:blue; text-align: center;"><img src="../../../img/lection5/form5.png" style="height: 50%; width: 50%;"></div>
+                        <p>представляет собой параболоид (<a href="#ris-2">рис. 5.2.</a>), то есть параболу относительно неизвестной переменной <i>A<sub>0</sub></i> и параболу относительно 
+                        неизвестной переменной <i>A<sub>1</sub></i>, проходящие во взаимно перпендикулярных плоскостях, так как <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i> независимые друг от друга переменные. 
+                        Ветви обеих парабол направлены вверх, так как при неудачных значениях <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i> отклонение искомой прямой от экспериментальных точек только 
+                        растет, а, значит, растет ошибка <i>F</i>. 
+                        Известно, что вершина параболы <i>a * A<sub>0</sub><sup>2</sup> + b * A<sub>0</sub> + c = 0</i> лежит в точке <i>A<sub>0</sub> = -b / (2 * a)</i>, вершина параболы 
+                        <i>p * A<sub>1</sub><sup>2</sup> + k * A<sub>1</sub> + m = 0</i> лежит в точке <i>A<sub>1</sub> = -k / (2 * p)</i>. Возведя выражение в скобках во вторую степень, разнеся знак суммы по отдельным 
+                        слагаемым и раскрыв скобки, получим выражения для <i>a, b, k, p</i>. И соответственно те же выражения для <i>A<sub>0</sub></i> и <i>A<sub>1</sub></i>, которые были приведены выше.
+                    </p>
+                        <div style="color: blue; text-align: center;"><img id="ris-2" src="../../../img/lection5/img04.gif" style="height: 80%; width: 80%;"><br>Рисунок 5.2. - График параболоида</div>
+                    <p>
+                    Подставляя в полученные выражения значения десяти (<i>n = 10</i>) значений <i>X<sub>i</sub></i> и десяти значений <i>Y<sub>i</sub></i>, получим наилучшие 
+                    значения <i>A<sub>0</sub><sup>*</sup></i> и <i>A<sub>1</sub><sup>*</sup></i>  и соответственно такое положение 
+                    искомой прямой линии, при котором она будет подходить ко всем экспериментальным точкам на ближайшее суммарное расстояние <i>F</i>. 
+                    Построенное уравнение с найденными коэффициентами называется <b style="color: red">регрессионной моделью</b>. (<a href="">табл. 5.1.</a>)</p>
+                    <p>Пример:</p>
+                    <div style="color: blue; text-align: right;">Таблица 5.1. - Расчет коэффициентов регрессии и оценка погрешностей</div>
+                    <table id="tabl-1" border="1" style="font-style:oblique; text-align: center; border-collapse: collapse; font-size: small; margin-left: auto; margin-right: auto; max-width: 100%;">
+                        <tr style = "font-weight: bold;">
+                            <th colspan = "3">Экспериментальные данные</th>
+                            <th colspan = "3">Расчетные данные</th>
+                            <th colspan = "2">Расхождение теории и эксперимента</th>
+                        </tr>
+
+                        <tr style="font-weight: bold;">
+                            <th>№ точки</th>
+                            <th>X<sub>i</sub></th>
+                            <th>Y<sub>i</sub></th>
+                            <th>X<sub>i</sub><sup>2</sup></th>
+                            <th>X<sub>i</sub>Y<sub>i</sub></th>
+                            <th>Y<sub>i</sub><sup>T</sup> = A<sub>0</sub>+ A<sub>1</sub>* X<sub>i</sub></th>
+                            <th>R<sub>i</sub> = Y<sub>i</sub><sup>T</sup> - Y<sub>i</sub></th>
+                            <th style="background-color: #FFFACD ">R<sub>i</sub><sup>2</sup></th>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">1</td>
+                            <td style="background-color:#FFA07A">1</td>
+                            <td style="background-color:#FFA07A">0</td>
+                            <td style="background-color:#E0FFFF">1</td>
+                            <td style="background-color:#E0FFFF">0</td>
+                            <td>0.21</td>
+                            <td>0.21</td>
+                            <td>0.04</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">2</td>
+                            <td style="background-color:#FFA07A">3</td>
+                            <td style="background-color:#FFA07A">2</td>
+                            <td style="background-color:#E0FFFF">9</td>
+                            <td style="background-color:#E0FFFF">6</td>
+                            <td>2.51</td>
+                            <td>0.51</td>
+                            <td>0.26</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">3</td>
+                            <td style="background-color:#FFA07A">3</td>
+                            <td style="background-color:#FFA07A">4</td>
+                            <td style="background-color:#E0FFFF">9</td>
+                            <td style="background-color:#E0FFFF">12</td>
+                            <td>2.51</td>
+                            <td>-1.49</td>
+                            <td>2.22</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">4</td>
+                            <td style="background-color:#FFA07A">4</td>
+                            <td style="background-color:#FFA07A">4</td>
+                            <td style="background-color:#E0FFFF">16</td>
+                            <td style="background-color:#E0FFFF">16</td>
+                            <td>3.66</td>
+                            <td>-0.34</td>
+                            <td>0.12</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">5</td>
+                            <td style="background-color:#FFA07A">6</td>
+                            <td style="background-color:#FFA07A">5</td>
+                            <td style="background-color:#E0FFFF">36</td>
+                            <td style="background-color:#E0FFFF">30</td>
+                            <td>5.96</td>
+                            <td>0.96</td>
+                            <td>0.92</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">6</td>
+                            <td style="background-color:#FFA07A">7</td>
+                            <td style="background-color:#FFA07A">6</td>
+                            <td style="background-color:#E0FFFF">49</td>
+                            <td style="background-color:#E0FFFF">42</td>
+                            <td>7.11</td>
+                            <td>1.11</td>
+                            <td>1.23</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">7</td>
+                            <td style="background-color:#FFA07A">8</td>
+                            <td style="background-color:#FFA07A">9</td>
+                            <td style="background-color:#E0FFFF">64</td>
+                            <td style="background-color:#E0FFFF">72</td>
+                            <td>8.26</td>
+                            <td>-0.74</td>
+                            <td>0.55</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">8</td>
+                            <td style="background-color:#FFA07A">9</td>
+                            <td style="background-color:#FFA07A">11</td>
+                            <td style="background-color:#E0FFFF">81</td>
+                            <td style="background-color:#E0FFFF">99</td>
+                            <td>9.41</td>
+                            <td>-1.59</td>
+                            <td>2.531</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">9</td>
+                            <td style="background-color:#FFA07A">12</td>
+                            <td style="background-color:#FFA07A">10</td>
+                            <td style="background-color:#E0FFFF">144</td>
+                            <td style="background-color:#E0FFFF">120</td>
+                            <td>12.86</td>
+                            <td>2.86</td>
+                            <td>8.18</td>
+                        </tr>
+
+                        <tr>
+                            <td style="background-color:#FFA07A">10</td>
+                            <td style="background-color:#FFA07A">15</td>
+                            <td style="background-color:#FFA07A">18</td>
+                            <td style="background-color:#E0FFFF">225</td>
+                            <td style="background-color:#E0FFFF">270</td>
+                            <td>16.31</td>
+                            <td>-1.69</td>
+                            <td>2.86</td>
+                        </tr>
+
+                        <tr>
+                            <td>n=10</td>
+                            <td>S = 68<br>сумма X<sub>i</sub></td>
+                            <td>P = 69<br>сумма Y<sub>i</sub></td>
+                            <td>M = 634<br>сумма X<sub>i</sub><sup>2</sup></td>
+                            <td>K = 667<br>сумма X<sub>i</sub>*Y<sub>i</sub></td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #FFFACD">
+                                Суммарная абсолютная ошибка<br> между экспериментом и теорией<br>
+                                F=18.91 - сумма R<sub>i</sub><sup>2</sup>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="4" style="background-color: #90EE90">
+                                A<sub>0</sub> = (P * M - S * K)/(n * M - S<sup>2</sup>)<br>
+                                A<sub>1</sub> = (N * K - S * P)/(n * M - S<sup>2</sup>)<br>
+                                Y = A<sub>0</sub> + A<sub>1</sub> * X, Y = -0.94 + 1.15 * X
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td style="background-color: #FFFACD">
+                                Среднеквадратичное отклонение<br>
+                                (относительная ошибка)<br>
+                                &#963; = &Sqrt; (F/(n - 2)) = 1.54
+                            </td>
+                        </tr>
+
+                    </table>
+
+                    <p>
+                        Теперь, зная общую зависимость, можно с пользой для себя спрогнозировать, чему будет равен <i>Y</i> при <i>X = 20: Y = -0.94 + 1.15 * X = -0.94 + 1.15 * 20 = 22.06</i>. 
+                        А сделав обратное преобразование <i>X = (Y + 0.94) / 1.15</i>, найти как подстроить причину <i>X</i>, чтобы обеспечить значение результата <i>Y = 3</i>. 
+                        Интересно, что прогноз на весьма отдалённые точки от рассматриваемых может оказаться весьма неточен. Так через <i>300</i> лет А. Эйнштейн поправил (дополнил) 
+                        модель механики Ньютона, которая на небольших значениях скоростей ранее казалась линейной.
+                    </p>
+
+                    <details>
+                        <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+                        <ul class="tasks_list">
+                            <hr>
+                            <li><i>Задайтесь самостоятельно двухмерными координатами десяти точек. Проведите расчет. Найдите и нарисуйте положение оптимальной для них прямой линии. Измерьте итоговую суммарную ошибку, 
+                                а также относительную ошибку в расчете на одну точку.</i></li>
+                            <li><i>Определите, какой процент экспериментальных точек входит в коридор, образованный параллельными линиями, отстоящими от теоретической прямой вверх и вниз на расстоянии среднеквадратичного отклонения, 
+                                сравните это число с нормой нормального распределения ошибки - 68%.</i></li>
+                            <li><i>Получите формулы расчета наилучших значений A<sub>0</sub> и A<sub>1</sub>, отмеряя отклонение положения экспериментальной точки от теоретической по перпендикуляру к теоретической прямой. 
+                                Поясните разницу полученных выражений.</i></li>
+                            <li><i>Загрузите упражнение с сайта. Расставьте экспериментальные точки в осях X, Y. 
+                                Наблюдайте за положением оптимальной прямой при изменении положения экспериментальных точек.</i></li>
+                            <li><i>Проведите расчет коэффициентов A<sub>0</sub>, A<sub>1</sub>, A<sub>2</sub> для случая, когда гипотеза принимает вид параболы: Y = A<sub>0</sub> + A<sub>1</sub> * X + A<sub>2</sub> * X<sub>2</sub>. Задайтесь положением экспериментальных точек, нарисуйте результирующий график. 
+                                Сравните значение ошибки с линейным одномерным случаем.</i></li>
+                            <li><i>Проведите расчет, если на Y влияет несколько входных переменных: Y = A<sub>0</sub> + A<sub>1</sub> * X + A<sub>2</sub> * Z + A<sub>3</sub> * W. Задайтесь положением экспериментальных точек, приведите результирующий график. 
+                                Сравните значение ошибки с линейным одномерным случаем.</i></li>
+                            <hr>
+                        </ul>
+                    </details>
+                    <p><b style="color: red">Обратите внимание</b>, что удачное усложнение гипотезы приводит к уменьшению ошибки описания моделью данных эксперимента. 
+                        Усложнение гипотезы за счет введения в рассмотрение дополнительных входных переменных предполагает появление в системе <b style="color: blue">дополнительных элементов</b>, понятий, сущностей.  
+                        Усложнение гипотезы за счет введения <b style="color: red">нелинейностей</b> означает, что в системе появляются <b style="color: blue">дополнительные связи</b>. То есть системы усложняются как за счет элементов, 
+                        так и за счет связей. Чем более сложной является рассматриваемая система, тем более сложной будет модель для ее описания 
+                        при заданном нормативном значении ошибки.</p>
+                    
+                    <p><b style="color: red">Замечание</b>. Если мерять расстояние между экспериментальной и теоретической точкой не по вертикальной оси <i>Y</i>, как это принято в кинематике, а 
+                        по перпендикуляру к теоретической прямой, то итоговые выражения будут несколько другими и будут указывать на положение оси вращения тела, 
+                        образованного заданными точками, обладающего минимальным моментом вращения. Первое связано с тем, что в кинематике реальное положение тела 
+                        <i>Y</i> в момент времени <i>X</i> должно как можно меньше отличаться от положения тела в этот же момент времени от гипотетического своего положения 
+                        при движении по теоретической прямой. Во втором случае речь идет о положении точки в пространстве с координатами <i>(x,y)</i> и вычисляется ось 
+                        с минимальным осевым моментом инерции при вращении.</p>
+
+                    <p>В любом случае мы находим наилучшее в пределах выдвинутой нами гипотезы <b style="color: red">описание (закон)</b> расположения заданных точек.</p>
+                    <p>Физики заметили, что тоже действие производит сама природа, минимизируя <b style="color: red">энергию системы</b>. Если взять доску, начертить на ней оси координат <i>XY</i>, 
+                        вбить гвозди в доску по координатам экспериментальных точек, надеть на них аптекарские резинки и продеть через все резинки линейку, то она примет 
+                        именно то положение, которое предсказывает расчет. (<a href="#ris-3">Рис. 5.3.</a>)
+                        <br><div style="color:blue; text-align: center;"><img id="ris-3" src="../../../img/lection5/image3.png" style="height: 50%; width: 50%;"><br>Рисунок 5.3. - Доска с гвоздями</div>
+                        Фактически природа - это такая же математическая машина, как и компьютер, только аналоговая. 
+                        Приведение к оптимальному результату происходит практически одномоментно, поскольку во всех точках пространства природные явления происходят 
+                        параллельно и одновременно, влияя друг на друга, взаимно уравновешиваясь. Явление, как отдельная точка оттягивает на себя положение линейки при общем 
+                        балансе притяжений от всех точек, хорошо наблюдать с помощью компьютерного упражнения при передвижении точек.</p>
+                    
+
+    </div>
+
+</div>
+<br><br><br>
+<h1>Видео:</h1>
+<video width="640" height="360" controls><source src="../../../img/lection5/51.mp4" type="video/mp4" ></video><br>
+<video width="640" height="360" controls><source src="../../../img/lection5/52.mp4" type="video/mp4" ></video><br>
+<video width="640" height="360" controls><source src="../../../img/lection5/53.mp4" type="video/mp4" ></video><br>
+<video width="640" height="360" controls><source src="../../../img/lection5/54.mp4" type="video/mp4" ></video><br>
+<script>
+        // чтобы два видео не проигрывались вместе
+        const videos = Array.from(document.querySelectorAll('video'));
+        let playing = true;
+        videos.forEach(video => {
+        video.addEventListener('play', function() {
+            if (playing) {
+                    videos.forEach(el => {
+                    el.pause();
+
+                });
+            }   
+        if (this.paused) {
+            playing = false;
+            this.play();
+
+        } 
+        else {playing = true;}
+        });
+    });
+
+    //чтобы видео останавливалось при закрытии окна
+    function stop_video(){
+        videos.find(video=>video.paused===false).pause();
+    };
+</script>
+
+
+    
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection04.html" title="Лекция&nbsp;04. Понятия дисциплины Искусственный интеллект. Гуманитарный аспект" class="small-link">Лекция&nbsp;04. Понятия дисциплины Искусственный интеллект. Гуманитарный аспект</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection06.html" title="Лекция&nbsp;06. Основные формы представления знаний в ИИ. Знания – модель – система -> прогноз" class="small-link">Лекция&nbsp;06. Основные формы представления знаний в ИИ. Знания – модель – система -> прогноз</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection02.html" title="Лекция 02. Компьютерная графика и геометрия, изображая и измеряя многомерное пространство" class="black-link">Л 02</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection03.html" title="Лекция 03. Как найти в n-мерном пространстве расстояние между двумя точками? Как найти угол?" class="black-link">Л 03</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection04.html" title="Лекция 04. Понятия дисциплины Искусственный интеллект. Гуманитарный аспект" class="black-link">Л 04</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 05</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection06.html" title="Лекция 06. Основные формы представления знаний в ИИ. Знания – модель – система -> прогноз" class="black-link">Л 06</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection07.html" title="Лекция 07. Линии организации материи - неживая, живая, сознательная, разумная" class="black-link">Л 07</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection08.html" title="Лекция 08. Модель человека - запас, поток, оценка" class="black-link">Л 08</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 03. Как найти в n-мерном пространстве расстояние между двумя точками? Как найти угол?</TITLE>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center"
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="author.html"    title="О руководителе курса &laquo;Моделирование систем&raquo;" class="black-link"> Авт. </a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection01.html" title="Лекция 01. Введение в искусственный интеллект" class="black-link">Л 01</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection02.html" title="Лекция 02. Компьютерная графика и геометрия, изображая и измеряя многомерное пространство" class="black-link">Л 02</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 03</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection04.html" title="Лекция 04. Понятия дисциплины Искусственный интеллект. Гуманитарный аспект" class="black-link">Л 04</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection05.html" title="Лекция 05. Выведение законов. Построение уравнения линейной регрессии – метод ИИ #1" class="black-link">Л 05</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection06.html" title="Лекция 06. Основные формы представления знаний в ИИ. Знания – модель – система -> прогноз" class="black-link">Л 06</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table
+><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1>Лекция 03. <br>Как найти в n-мерном пространстве расстояние между двумя точками? Как найти угол?</h1>
+</div>
+
+<div class="content">
+    <div class="text_content" id="section3.1">
+        <p>Допустим, что в БД овощной базы (<a href="#tabl-1">табл. 3.1.</a>) имеется информация о двух объектах - огурце и помидоре, которые по мнению заведующего базой характеризуются пятью признаками.</p>
+        
+        <div style="color: blue; text-align: right;">Таблица 3.1. - БД овощной базы</div>
+        <table id="tabl-1" border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;"><thead style="background-color: #c0b6ff;"><tr><th>Признак</th><th>Характерный размер, X1<br><small>(0,30)</small> <br><small>см</small></th><th>Спелость, X2<br><small>(0,10)</small> <br><small>долей</small></th><th>Вес, X3<br><small>(0,1)</small> <br><small>кг</small></th><th>Размножается семечками, X4<br><small>(0 | 1)<br>нет | да</small></th><th>Вкус, X5<br><small>(0,10)</small> <br><small>баллов</small></th></tr></thead><tbody><tr><td>Огурец</td><td>10</td><td>9</td><td>0.2</td><td>1</td><td>2</td></tr><tr><td>Помидор</td><td>4</td><td>7</td><td>0.1</td><td>1</td><td>3</td></tr></tbody></table>
+
+        <p><b style="color:blue">Очевидно</b>, что пространство для их описания имеет размерность, равную пяти <i>(n=5)</i>, и совпадает с количеством признаков. Пока мы не можем сказать, зависимы ли эти признаки 
+            друг от друга или нет, то есть взаимно перпендикулярны оси этой системы координат или нет. Но кое-что мы вычислить уже можем - <b style="color:blue">чем больше расстояние между объектами, 
+            тем меньше их сходство и тем больше их различие.</b></p>
+
+        <p><b style="color:blue">Способ измерения</b> предполагает объявление метрики. В школе используют два инструмента для измерений - <b style="color:blue">линейку</b> и <b style="color:blue">транспортир</b>. Это связно с тем, что в природе, 
+            как нам говорят физики, имеется два типа движения - прямолинейное (поступательное) и вращательное (колебательное). Все остальные движения - суть комбинация этих движений.
+             (С появлением фракталов появилось еще движение внутрь и вовне).</p>
+
+        <p>Итак, даны координаты двух точек в 5-мерном пространстве: <b style="color:red">Огурец О</b><i>(10,9,0.2,1,2)</i> и <b style="color:red">Помидор П</b><i>(4,7,0.1,1,3)</i>. Зная теорему Пифагора и используя 
+            <b style="color:red">евклидову метрику</b>, найдем расстояние <i>R</i> между точками <i>П</i> и <i>О</i>: 
+        <p style="text-align: center; font-size: large;">R(П, О) = √((X₁п − X₁о)² + (X₂п − X₂о)² + (X₃п − X₃о)² + (X₄п − X₄о)² + (X₅п − X₅о)²)</p>
+
+        <p>В данном случае расстояние между огурцом и помидором равно: </p>
+        <p style="text-align: center; font-size: large;">√((10 − 4)² + (9 − 7)² + (0.2 − 0.1)² + (1 − 1)² + (2 − 3)²) ≈ 6.4.</p>
+    
+        <p>(Разумеется, чтобы какой-то признак на фоне других не терялся, его значения можно отмасштабировать). Однако это не единственная метрика, применяемая в инженерии. 
+            Можно, например, <b style="color:blue">возводить разности в <i>k</i>-ю степень и извлекать корень <i>k</i>-ой степени из суммы разностей</b> (<b style="color:red">метрика Минковского</b>). Применяют также метрики 
+            <b style="color:red">Чебышева</b>, <b style="color:red">Хемминга</b>, <b style="color:red">французского метро</b> и другие. </p>
+        <br>
+        <div style="text-align: center;"><img id="graf-1" src="../../../img/lection3/transp.png" style="width:35%;height:35%"></div>
+        <br>
+
+        <details>
+            <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+            <ul class="tasks_list">
+                <hr>
+                <li><i>Сравните между собой фрукты (груша, яблоко, банан, киви, арбуз, дыня) на похожесть.</i></li>
+                <li><i>Нарисуйте, где они расположены в 5-мерном пространстве. Нарисуйте их расположение с разных ракурсов.</i></li>
+                <hr>
+            </ul>
+        </details>
+            <p>Наблюдателя <i>S</i> в нашем примере поместим в точку <i>5</i>-мерного пространства: <i>S(15, 5, 0.5, 0.5, 5)</i>. 
+                <b style="color: blue;">Вектор - это направленный отрезок прямой линии, обозначаемый стрелкой от его конца к его началу.</b> Проведем векторы 
+                <i>L1</i> и <i>L2</i> от наблюдателя <i>S</i> к наблюдаемым точкам <i>О</i> и <i>П</i>. Чтобы получить размер вектора по каждой оси координат, 
+                достаточно из соответствующей координаты его конца вычесть координату его начала. 
+                <ul class="tasks_list">
+                    <li style="font-size: large;">Вектор <i>&lt;S-Огурец&gt;</i> = L1 = (-5, 4, -0.3, 0.5, -3)</li>
+                    <li style="font-size: large;">Вектор <i>&lt;S-Помидор&gt;</i> = L2 = (-11, 2, -0.4, 0.5, -2)</li>
+                </ul>
+            </p>
+            <p>Найдём косинус угла между векторами <i>L1</i> и <i>L2</i> по известной в математике формуле:</p>
+            <p style="text-align: center; font-size: large;">cos(А) = ((-5) * (-11) + 4 * 2 + (-0.3) * (-0.4) + 0.5 * 0.5 + (-3) * (-2)) / (√(-5) * (-5) + 4 * 4 + (-0.3) * (-0.3) + 0.5 * 0.5 + (-3) * (-3)) * √((-11) * (-11) + 2 * 2 + (-0.4) * (-0.4) + 0.5 * 0.5 + (-2) * (-2)) = 69.37 / (√50.34 * √129.41) ≈ 0.86.</p> 
+            <p>А = 30.74 (пока для простоты назовём это градусы).</p>
+
+            <p>
+                В общем виде:</p>
+                <p style="text-align: center; font-size: large;">cos(α) = L1 * L2 / (|L1| * |L2|)</p>
+                <p style="text-align: center; font-size: large;">или</p>
+                <p style="text-align: center; font-size: large;">cos(α) = (X1 * X2 + Y1 * Y2) / (√(X12 + Y12) * √(X22 + Y22))</p>
+
+                <p>Где вектор:<br><br><i>L1 = (X1, Y1), L2 = (X2, Y2), X1 = (Xo - Xs), Y1 = (Yo - Ys), X2 = (Xп - Xs), Y2 = (Yп - Ys)</i>. <br><br>
+                Если пространство n-мерно, то в числителе дроби содержится n слагаемых в виде произведений проекции первого вектора на проекцию второго вектора 
+                на соответствующую ось: <i>X1 * X2 + Y1 * Y2 + Z1 * Z2 + …</i>, называемых скалярным произведением векторов 
+                <i>L1</i> и <i>L2</i>, а в знаменателе<i> &#124;L1&#124; </i>  - длина первого вектора 
+                √(X12 + Y12 + Z12 + …), 
+                умноженная на длину второго вектора 
+                <i> &#124;L2&#124; = </i>  √(X22 + Y22 + Z22 + … ). <br><br>Где <i>X1, Y1, Z1</i>, … - проекции первого из векторов <br>на соответствующие оси координат 
+                <i style="font-size: large;">X, Y, Z, …</i> <br><br>А <i>X2, Y2, Z2, …</i> - проекции второго вектора на <br>соответствующие оси координат <i style="font-size: large;">X, Y, Z, …</i>
+                <br><br>
+                <div style="text-align: center;"><img id="graf-1" src="../../../img/lection3/rectangle.png" style="width:80%;height:80%"></div>
+            </p>
+
+
+   </div>
+</div>
+
+<h1>Видео:</h1>
+<video width="640" height="360" controls><source src="../../../img/lection3/31.mp4" type="video/mp4" ></video><br>
+<video width="640" height="360" controls><source src="../../../img/lection3/32.mp4" type="video/mp4" ></video><br>
+<video width="640" height="360" controls><source src="../../../img/lection3/33.mp4" type="video/mp4" ></video><br>
+<script>
+        // чтобы два видео не проигрывались вместе
+        const videos = Array.from(document.querySelectorAll('video'));
+        let playing = true;
+        videos.forEach(video => {
+        video.addEventListener('play', function() {
+            if (playing) {
+                    videos.forEach(el => {
+                    el.pause();
+
+                });
+            }   
+        if (this.paused) {
+            playing = false;
+            this.play();
+
+        } 
+        else {playing = true;}
+        });
+    });
+
+    //чтобы видео останавливалось при закрытии окна
+    function stop_video(){
+        videos.find(video=>video.paused===false).pause();
+    };
+</script>
+
+    
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection02.html" title="Лекция&nbsp;02. Компьютерная графика и геометрия, изображая и измеряя многомерное пространство" class="small-link">Лекция&nbsp;02. Компьютерная графика и геометрия, изображая и измеряя многомерное пространство</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection04.html" title="Лекция&nbsp;02. Понятия дисциплины Искусственный интеллект. Гуманитарный аспект" class="small-link">Лекция&nbsp;04. Понятия дисциплины Искусственный интеллект. Гуманитарный аспект</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="author.html"    title="О руководителе курса &laquo;Моделирование систем&raquo;" class="black-link"> Авт. </a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection01.html" title="Лекция 01. Введение в искусственный интеллект" class="black-link">Л 01</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection02.html" title="Лекция 02. Компьютерная графика и геометрия, изображая и измеряя многомерное пространство" class="black-link">Л 02</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 03</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection04.html" title="Лекция 04. Понятия дисциплины Искусственный интеллект. Гуманитарный аспект" class="black-link">Л 04</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection05.html" title="Лекция 05. Выведение законов. Построение уравнения линейной регрессии – метод ИИ #1" class="black-link">Л 05</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection06.html" title="Лекция 06. Основные формы представления знаний в ИИ. Знания – модель – система -> прогноз" class="black-link">Л 06</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>

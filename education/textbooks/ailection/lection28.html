@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <LINK REL=STYLESHEET TYPE="text/css" HREF='../../../css\1.css' >
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+        <TITLE>Лекция 28. Метод ИИ #8 - нахождение осей координат. Определение размерности пространства</TITLE>
+    </head>
+<body bgcolor="#ffffff" text="#000000"
+leftmargin="0" topmargin="0" rightmargin="0" marginheight="0" marginwidth="0">
+<div align="center"
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="top">
+<td><img height="37" width="21" src="../../.../../../img/themes/split.gif" /></td>
+<td><a href="contents.html" title="Оглавление"><img alt="Оглавление" height="37" width="27" border="0" src="../../.../../../img/themes/cont.gif" /></a></td>
+<td valign="bottom" align="right" width="702"
+><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection25.html" title="Лекция 25. Усилители деятельности. Этапы цивилизации. Прогноз будущего" class="black-link">Л 25</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection26.html" title="Лекция 26. Кластеризация – метод ИИ #7. Экземпляры и классы" class="black-link">Л 26</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection27.html" title="Лекция 27. Метод ИИ #8 – метод косинусов" class="black-link">Л 27</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 28</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection29.html" title="Лекция 29. Теоретическое обобщение" class="black-link">Л 29</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection30.html" title="Лекция 30. Обобщение. Интеллект, обучение, прогнозирование, управление" class="black-link">Л 30</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection31.html" title="Лекция 31. ИИ - усилитель деятельности мозга. Компьютеры и вычислительные платформы. Борьба со сложностью окружающего мира" class="black-link">Л 31</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table
+><hr noshade size="1" color="#9b98fe" />
+<table border="0" cellpadding="5" cellspacing="0" width="750">
+<tbody>
+<tr>
+<td>
+
+
+<div style="text-align: center; color: blue; font-size: large;">
+    <h1>Лекция 28.<br>Метод ИИ #8 - нахождение осей координат. Определение размерности пространства</h1>
+</div>
+
+<!--Основной текст-->
+<div>
+    <p>Чтобы нарисовать множество объектов (в нашем примере их <b style="color: red">6</b>) в осях признаков (в нашем примере их <b style="color: red">5</b>) наиболее удачно, вычислим самые <b style="color: red">независимые друг от друга 
+        оси координат</b>. Такие оси изображаются перпендикулярно по отношению друг к другу и ко всем остальным и называются <b style="color: red">ортогональными</b>. Не трудно сообразить, что самые 
+        удачные признаки для классификации (то есть для различения объектов друг от друга) – независимые, то есть те, косинус угла между которыми равен или близок к нулю.</p>
+    <p>Кстати, не факт, что само пространство, где располагаются объекты, <b style="color: red">5</b>-мерно (цвет, вкус, форма, размер, способ размножения). Возможно, что какие-то признаки 
+        зависимы от других, а их количество избыточно. </p>
+    <p>Например, все красные фрукты всегда ещё и сладкие, за редким исключением. Тогда не имеет смысла держать в базе данных такой атрибут как «цвет», если в базе данных уже есть атрибут «вкус». 
+        А зная вкус, можно вычислить с определённой точностью цвет экземпляра.</p>
+    <p>Итак, надо научиться определять <b style="color: red">размерность пространства</b>.</p>
+    <p>Не факт, что оси (признаки) в нашем примере располагаются друг к другу под прямым углом, т.е. независимы, а само пространство линейно.</p>
+    <p>Если спроецировать все объекты на каждую из осей по-отдельности, то можно увидеть, что лучше всего объекты разделяются по признакам: Вкус, Размер. Эти оси делят все объекты 
+        на две одинаковые крупные части, на два класса. Вкус делит пополам множество объектов на сладкие и несладкие, а Размер делит пополам множество объектов на крупные и мелкие. 
+        Далее идут Цвет и Форма, они делят объекты на <i>2</i> класса по <i>2</i> и <i>4</i> объекта в каждом. </p>
+    <img style="display: block; margin-left: auto; margin-right: auto; width: 45%;" src="../../../img/lection28/theme28_pict1.png">
+    <p>Отсюда следует, что наиболее информативными являются признаки Вкус или Размер, именно каждый из них лучше всего дифференцирует (разделяет) множество объектов примера.</p>
+    <p>Признак Способ делит объекты на <i>2</i> класса по <i>1</i> и <i>5</i> объектов в каждом. Если надо выделить среди всех объектов Забор, 
+        то признак Способ для этого подходит лучше всего. </p>
+    <p>Если надо понять, какой объект перед нами из всего множества объектов <i>{А,Я,Д,П,О,З}</i>, то ни один признак с этим в одиночку не справится, нужна комбинация 
+        осей, желательно минимальная.</p>
+    <p>Вычислить в сложных случаях распределений степень их дифференциации по классам можно по формуле энтропии (информации), которую нам предоставляет информатика: </p>
+    <p style="text-align: center;"><i><b style="color: red">i = - 1/n<sub>1</sub>*log<sub>2</sub>(1/nn<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>)</b></i> - (формула Шеннона).</p>
+    <p>Здесь два слагаемых соответствуют двум классам, на которые разбивается множество экземпляров, <b style="color: red"><i>n<sub>1</sub></i></b> – количество экземпляров первого класса, 
+        <b style="color: red"><i>n<sub>2</sub></i></b> – количество экземпляров второго класса, <b style="color: red"><i>i</i></b> - информативность признака. </p>
+    <p>То есть: </p>
+
+    <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>в</sub> = - 1/n<sub>1</sub>*log<sub>2</sub>(1/nn<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>)=
+        - 3/6*log<sub>2</sub>(3/6) - 3/6*log<sub>2</sub>(3/6) = 1 (бит)<br>
+    </span>
+
+    <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>в</sub> = - 1/n<sub>1</sub>*log<sub>2</sub>(1/nn<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>)=
+        - 3/6*log<sub>2</sub>(3/6) - 3/6*log<sub>2</sub>(3/6) = 1 (бит)<br>
+    </span>
+
+    <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>р</sub> = - 1/n<sub>1</sub>*log<sub>2</sub>(1/nn<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>)=
+        - 3/6*log<sub>2</sub>(3/6) - 3/6*log<sub>2</sub>(3/6) = 1 (бит)<br>
+    </span>
+
+    <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>ц</sub> = - 1/n<sub>1</sub>*log<sub>2</sub>(1/nn<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>)=
+        - 2/6*log<sub>2</sub>(2/6) - 4/6*log<sub>2</sub>(4/6) = 0.98 (бит)<br>
+    </span>
+
+    <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>ф</sub> = - 1/n<sub>1</sub>*log<sub>2</sub>(1/nn<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>)=
+        - 2/6*log<sub>2</sub>(2/6) - 4/6*log<sub>2</sub>(4/6) = 0.98 (бит)<br>
+    </span>
+
+    <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>с</sub> = - 1/n<sub>1</sub>*log<sub>2</sub>(1/nn<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>)=
+        - 1/6*log<sub>2</sub>(1/6) - 5/6*log<sub>2</sub>(5/6) = 0.65 (бит)<br>
+    </span>
+    <p>Выбирая самый информативный признак <b style="color: red"><i>max(i<sub>в</sub>, i<sub>р</sub>, i<sub>ц</sub>, i<sub>ф</sub>, i<sub>с</sub>)</i></b>, получаем <br>
+        <b style="color: red"><i>i<sub>в</sub> = i<b style="color: red">р</b> = 1</i></b>(бит). Такими признаками в нашем примере оказались Вкус и Размер, поэтому в первую очередь для классификации надо попытаться 
+        использовать именно их.</p>
+    <p>Вычислим теперь для нашего примера углы между осями (признаками). Используем для этого формулу косинуса, беря все возможные пары.</p>
+    <p>Например, косинус угла между Цветом и Вкусом:</p>
+    <p style="text-align: center; font-style: italic; font-size: 25px; font-weight: bold;">
+        \( сos(Ц,В) = \frac{1*1+1*1+1*0+0*1+1*0+0*0}{\sqrt{(1^2 + 1^2 + 1^2 + 0^2 + 1^2 + 0^2)*(1^2 + 1^2 + 0^2 + 1^2 + 0^2 + 0^2)}} = \frac{2}{\sqrt{4*3}} = 0.58 \)
+    </p>
+    <p>То есть угол равен <i>54.5</i>&deg;.</p>
+    <p>Подсчитав аналогично косинусы остальных углов, имеем:</p>
+
+    <table border="1" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <tr style="background-color:#a99df2;">
+            <th><i>Признак</i></th>
+            <th><i>Цвет(<strong>Ц</strong>)</i></th>
+            <th><i>Вкус(<strong>В</strong>)</i></th>
+            <th><i>Форма(<strong>Ф</strong>)</i></th>
+            <th><i>Размер(<strong>Р</strong>)</i></th>
+            <th><i>Способ размножения(<strong>С</strong>)</i></th>
+        </tr>
+
+        <tr>
+            <td style="background-color:#a99df2;"><i>Цвет(<strong>Ц</strong>)</i></td>
+            <td style="background-color:#bee3f0">1</td>
+            <td style="background-color:#bee3f0">0.58</td>
+            <td style="background-color:#bee3f0">0.5</td>
+            <td style="background-color:#bee3f0">0.58</td>
+            <td style="background-color:#bee3f0">0.77</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#a99df2;"><i>Вкус(<strong>Ц</strong>)</i></td>
+            <td style="background-color:#bee3f0">0.58</td>
+            <td style="background-color:#bee3f0">1</td>
+            <td style="background-color:#bee3f0">0.87</td>
+            <td style="background-color:#bef0cf">0.33</td>
+            <td style="background-color:#bee3f0">0.77</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#a99df2;"><i>Форма(<strong>Ц</strong>)</i></td>
+            <td style="background-color:#bee3f0">0.5</td>
+            <td style="background-color:#bee3f0">0.87</td>
+            <td style="background-color:#bee3f0">1</td>
+            <td style="background-color:#bee3f0">0.58</td>
+            <td style="background-color:#bee3f0">0.9</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#a99df2;"><i>Размер(<strong>Ц</strong>)</i></td>
+            <td style="background-color:#bee3f0">0.58</td>
+            <td style="background-color:#bef0cf">0.33</td>
+            <td style="background-color:#bee3f0">0.58</td>
+            <td style="background-color:#bee3f0">1</td>
+            <td style="background-color:#bee3f0">0.77</td>
+        </tr>
+
+        <tr>
+            <td style="background-color:#a99df2;"><i>Способ размножения(<strong>Ц</strong>)</i></td>
+            <td style="background-color:#bee3f0">0.77</td>
+            <td style="background-color:#bee3f0">0.77</td>
+            <td style="background-color:#bee3f0">0.9</td>
+            <td style="background-color:#bee3f0">0.77</td>
+            <td style="background-color:#bee3f0">1</td>
+        </tr>
+        
+    </table>
+    <p>Самой непохожей является пара признаков: «Вкус-Размер», у которых степень различия составляет <b style="color: red"><i>0.33</i></b>, что составляет угол около 
+        <b style="color: red"><i>70</i></b>&deg; (близкий к <b style="color: red"><i>90</i></b>&deg;) между осями координат.</p>
+    <p>Можно сказать, что оси «Вкус-Размер» почти независимы. Точнее степень их зависимости (взаимозаменяемости) составляет всего <b style="color: red"><i>0.33</i></b>. </p>
+    <p>Итак, во-первых, результаты нашего анализа позволяют утверждать, что Вкус менее всего связан с Размером. Во-вторых, исходные данные, приведённые в таблице, 
+        показывают: объекты бывают сладкие маленькие, сладкие немаленькие, маленькие несладкие и немаленькие несладкие. То есть связи между Вкусом и Размером действительно нет. 
+        А, значит, предполагается, что эти оси хорошо <b style="color: red">дифференцируют</b> (разделяют) Объекты в пространстве Признаков. 
+        Посмотрите на рисунок – все объекты почти равномерно распределились по пространству признаков «<i>Вкус-Размер</i>».</p>
+    <p>Наглядно информативность двух осей, подсчитанную по формуле Шеннона, можно показать на дереве, например для признаков 
+        «<i>Цвет-Вкус</i>» - четыре слагаемых соответствуют четырём классам в распределении.</p>
+    <figure>
+        <div style="display: flex;">
+            <img style="display: block; margin-left: auto; margin-right: auto; width: 50%; height: 50%;" src="../../../img/lection28/theme28_pict2.png">
+            <img style="display: block; margin-left: auto; margin-right: auto; width: 50%; height: 50%;" src="../../../img/lection28/theme28_pict3.png"> 
+        </div>
+        <figcaption style="text-align: center; font-size: 20px; margin-top:10px; color: blue">Объекты и классы в осях координат «Вкус-Размер». Видны классы «Фрукты», «Маленькие», 
+            «Фрукты-Овощи», «Живые», но Помидор от Огурца и Арбуз от Дыни в этих осях отличить невозможно</figcaption>
+    </figure>
+    
+        <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>цв</sub> = - 1/n<sub>1</sub>*log<sub>2</sub>(1/n<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>) - 1/n<sub>3</sub>*log<sub>2</sub>(1/n<sub>3</sub>)
+        - 1/n<sub>4</sub>*log<sub>2</sub>(1/n<sub>4</sub>)=<br>
+        = - 1/6*log<sub>2</sub>(1/6) - 1/6*log<sub>2</sub>(1/6) - 2/6*log<sub>2</sub>(2/6) - 2/6*log<sub>2</sub>(2/6) = 1.92 (бит)<br>
+    </span>
+    <p>Наибольшая связь в данном примере наблюдается между координатами «<i>Способ-Форма</i>» (<i>0.9</i>). Действительно, исходные данные показывают, что если есть семечки, 
+        то объект круглый, исключение составляет только один объект «Огурец». Эти координаты практически взаимозаменяемы. Оси «<i>Способ-Форма</i>» хуже дифференцируют объекты, 
+        чем оси «<i>Вкус-Размер</i>». Объекты скучены в одной области и плохо различимы. Такие оси для задачи различения объектов почти бесполезны 
+        (информативность осей <b style="color: red"><i>i<sub>фс</sub></i></b> ниже, чем в предыдущем случае <i><b style="color: red">i<sub>цв</sub></b></i>).</p>
+
+    <figure>
+        <img style="display: block; margin-left: auto; margin-right: auto; width: 50%; height: 50%;" src="../../../img/lection28/theme28_pict4.png">
+        <figcaption style="text-align: center; font-size: 20px; margin-top:10px; color: blue">Объекты в осях координат «Способ-Форма». Виден класс «Живые», оси плохо дифференцируют объекты в пространстве координат</figcaption>
+    </figure>
+
+    <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>фс</sub> = - 1/n<sub>1</sub>*log<sub>2</sub>(1/nn<sub>1</sub>) - 1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>) - 1/n<sub>3</sub>*log<sub>2</sub>(1/n<sub>3</sub>)
+        - 1/n<sub>4</sub>*log<sub>2</sub>(1/n<sub>4</sub>)=<br>
+        = - 1/6*log<sub>2</sub>(1/6) - 1/6*log<sub>2</sub>(1/6) - 0/6*log<sub>2</sub>(0/6) - 4/6*log<sub>2</sub>(4/6) = 1.25 (бит)<br>
+    </span>
+
+    <p>Итак, логично прежде всего принять за основу оси «<i>Вкус-Размер</i>». Но поскольку эти оси не полностью разделяют все объекты (путаются Арбуз с Дыней и Помидор с Огурцом), 
+        то в качестве дополнительных к основным осям ВР можно было бы добавить еще одну ось из оставшихся {<i><b style="color: red">Ц,Ф,С</b></i>}. То есть следующую ось можно выбрать вычислением, 
+        присоединяя по очереди или <i><b style="color: red">Ц</b></i>, или <i><b style="color: red">Ф</b></i>, или <i><b style="color: red">С</b></i> к <i><b style="color: red">ВР</b></i>.</p> 
+    <p>Испытав тройку осей «<i>Вкус-Размер-Цвет</i>», можно увидеть, что их достаточно для полной дифференциации всех объектов. <br>
+        <img style="display: block; margin-left: auto; margin-right: auto; max-width: 50%;" src="../../../img/lection28/theme28_pict5.png">
+        Информативность трёх датчиков-осей составляет:
+        <img style="display: block; margin-left: auto; margin-right: auto; max-width: 50%; margin-top: 10px;" src="../../../img/lection28/theme28_pict6.png"></p>
+    
+    <span style="font-weight: bold; font-style: italic; font-size: 100%;">
+        i<sub>врц</sub> = - 6(1/n<sub>1</sub>*log<sub>2</sub>(1/n<sub>1</sub>)) - 2(1/n<sub>2</sub>*log<sub>2</sub>(1/n<sub>2</sub>)) =
+        - 6 * 1/6*log<sub>2</sub>(1/6) - 2*0/6*log<sub>2</sub>(0/6) = 2.59 (бит)<br>
+    </span>
+
+    <p>Такая же информативность у тройки <i>ЦФР</i> (<i>2.59</i> бит). В этом смысле оси <i>В</i> и <i>Ф</i> взаимозаменяемы.</p>
+    <p>У нас получилось трёхмерное пространство: «Вкус-Размер-Цвет», которое изображено на рисунке - все объекты разнесены по пространству по одному, достигнута максимальная дифференциация.</p>
+    <p>А к примеру тройка <i>ВФС</i> имеет информативность <i>1.79</i> бит и является самой неудачной, так как датчики имеют бОльшую зависимость друг от друга. 
+        Исследование четвёрок, пятёрок и т.д. в этом примере информативность не повышают, так как трёх датчиков вполне достаточно для поставленной задачи.</p>
+    <p>Исследуя информативность пар, троек и более признаков, можно определить наилучшую комбинацию осей для представления робота о мире.</p>
+    <p>Остальные признаки, указанные в базе данных, избыточны. А тот, кто создавал исходную таблицу, проделал лишнюю работу, измеряя избыточные признаки.</p>
+    <p>Таким образом, мы определили размерность пространства существования наших объектов. Выбранные датчики «Вкус», «Размер», «Цвет», если их установить на робота, будут вполне 
+        справляться с задачей сортировки объектов. Заодно, заметим, что робот получил исчерпывающую информацию о мире заданных предметов и точно может дать определение каждому. 
+        Робот выделил и усвоил понятия мира заданных предметов.</p>
+    <details>  
+        <summary><span class="red"><b style="font-size: larger;">Задания</b></span></summary>
+        <ul class="tasks_list">
+            <hr>
+            <li><i>Загрузите с сайта упражнение «Метод косинусов». Задайте свой пример. Проведите классификацию. Найдите наилучшие оси координат. Определите размерность 
+                пространства. Опишите робота и картину мира в его сознании.</i></li>
+            <hr>
+        </ul>
+    </details>
+</div>
+<br><br><br>
+		<h1>Презентация:</h1><embed src="../../../docs/presentation3.pdf" type="application/pdf" width="100%" height="700px" display="block">
+<br><br><br>
+</table
+><table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+<tr valign="middle" align="center">
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../.../../../img/themes/prev1.gif" /></td>
+<td width="375" bgcolor="#8173df"><a href="lection27.html" title="Лекция&nbsp;27. Метод ИИ #8 – метод косинусов" class="small-link">Лекция&nbsp;27. Метод ИИ #8 – метод косинусов</a></td>
+<td width="375" bgcolor="#ee9c00"><a href="lection29.html" title="Лекция&nbsp;29. Теоретическое обобщение" class="small-link">Лекция&nbsp;29. Теоретическое обобщение</a></td>
+<td><img title="[ ]" alt="[ ]" height="23" width="12" src="../../.../../../img/themes/next1.gif" /></td>
+</tr>
+<tr>
+<td colspan="4" align="right"><table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td bgcolor="#f7eedd"><a href="lection25.html" title="Лекция 25. Усилители деятельности. Этапы цивилизации. Прогноз будущего" class="black-link">Л 25</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection26.html" title="Лекция 26. Кластеризация – метод ИИ #7. Экземпляры и классы" class="black-link">Л 26</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection27.html" title="Лекция 27. Метод ИИ #8 – метод косинусов" class="black-link">Л 27</a></td>
+<td width="15">&nbsp;</td>
+<td xbgcolor="#f7eedd"><span class="activepage-pseudolink">Л 28</span></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection29.html" title="Лекция 29. Теоретическое обобщение" class="black-link">Л 29</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection30.html" title="Лекция 30. Обобщение. Интеллект, обучение, прогнозирование, управление" class="black-link">Л 30</a></td>
+<td width="15">&nbsp;</td>
+<td bgcolor="#f7eedd"><a href="lection31.html" title="Лекция 31. ИИ - усилитель деятельности мозга. Компьютеры и вычислительные платформы. Борьба со сложностью окружающего мира" class="black-link">Л 31</a></td>
+<td width="15">&nbsp;</td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+</html>
